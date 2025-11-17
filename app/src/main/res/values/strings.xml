@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">GlowPoint</string>
+
+    <!-- Language Selection -->
+    <string name="select_language">Select Language</string>
+    <string name="english">English</string>
+    <string name="hindi">Hindi</string>
+
+    <!-- Login Screen -->
+    <string name="login_with_phone">Login with Phone</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="send_code">Send Code</string>
+
+    <!-- OTP Screen -->
+    <string name="enter_otp">Enter OTP</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="verify_login">Verify &amp; Login</string>
+
+    <!-- Create Profile Screen -->
+    <string name="create_your_profile">Create Your Profile</string>
+    <string name="full_name">Full Name</string>
+    <string name="email_address">Email Address</string>
+    <string name="create_profile">Create Profile</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_message">Welcome to GlowPoint!</string>
+    <string name="logout">Logout</string>
+
+    <!-- No Internet Dialog -->
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="check_internet_connection">Please check your internet connection and try again.</string>
+    <string name="ok">OK</string>
+</resources>

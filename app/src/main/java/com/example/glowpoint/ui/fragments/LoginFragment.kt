@@ -1,0 +1,93 @@
+package com.example.glowpoint.ui.fragments
+
+import android.app.AlertDialog
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.example.glowpoint.R
+import com.example.glowpoint.databinding.FragmentLoginBinding
+import com.example.glowpoint.ui.viewmodel.LoginViewModel
+import com.example.glowpoint.util.LocaleHelper
+import com.example.glowpoint.util.NetworkUtils
+import dagger.hilt.android.AndroidEntryPoint
+
+@AndroidEntryPoint
+class LoginFragment : Fragment() {
+
+    private var _binding: FragmentLoginBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: LoginViewModel by viewModels()
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        if (LocaleHelper.getLanguage(requireContext()) == null) {
+            LanguageSelectionDialogFragment().show(childFragmentManager, "LanguageSelectionDialogFragment")
+        }
+
+        binding.sendCodeButton.setOnClickListener {
+            if (NetworkUtils.isInternetAvailable(requireContext())) {
+                val phoneNumber = "+91" + viewModel.phoneNumber.value?.trim()
+                if (phoneNumber.isNotEmpty() && phoneNumber.length == 13) {
+                    viewModel.sendVerificationCode(phoneNumber, requireActivity())
+                } else {
+                    Toast.makeText(requireContext(), "Please enter a valid phone number", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                showNoInternetDialog()
+            }
+        }
+
+        observeViewModel()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (viewModel.isUserLoggedIn()) {
+            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+        }
+    }
+
+    private fun observeViewModel() {
+        viewModel.verificationId.observe(viewLifecycleOwner) {
+            val action = LoginFragmentDirections.actionLoginFragmentToOtpFragment(it)
+            findNavController().navigate(action)
+        }
+
+        viewModel.error.observe(viewLifecycleOwner) {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun showNoInternetDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.no_internet_connection)
+            .setMessage(R.string.check_internet_connection)
+            .setPositiveButton(R.string.ok) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+}
