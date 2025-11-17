@@ -12,7 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class AuthViewModel @Inject constructor(
     private val repository: AuthRepository
 ) : ViewModel() {
 
@@ -21,8 +21,11 @@ class LoginViewModel @Inject constructor(
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
-    private val _verificationId = MutableLiveData<String>()
-    val verificationId: LiveData<String> = _verificationId
+    private val _verificationId = MutableLiveData<String?>()
+    val verificationId: LiveData<String?> = _verificationId
+
+    private val _resendToken = MutableLiveData<PhoneAuthProvider.ForceResendingToken?>()
+    val resendToken: LiveData<PhoneAuthProvider.ForceResendingToken?> = _resendToken
 
     private val _authResult = MutableLiveData<AuthResult>()
     val authResult: LiveData<AuthResult> = _authResult
@@ -43,12 +46,22 @@ class LoginViewModel @Inject constructor(
         override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
             _isLoading.value = false
             _verificationId.value = verificationId
+            _resendToken.value = token
         }
     }
 
-    fun sendVerificationCode(phoneNumber: String, activity: Activity) {
+    fun sendVerificationCode(activity: Activity) {
         _isLoading.value = true
-        repository.sendVerificationCode(phoneNumber, activity, callbacks)
+        val fullPhoneNumber = "+91" + phoneNumber.value
+        repository.sendVerificationCode(fullPhoneNumber, activity, callbacks)
+    }
+
+    fun resendVerificationCode(activity: Activity) {
+        _isLoading.value = true
+        val fullPhoneNumber = "+91" + phoneNumber.value
+        resendToken.value?.let {
+            repository.resendVerificationCode(fullPhoneNumber, activity, it, callbacks)
+        }
     }
 
     fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
@@ -59,7 +72,7 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun isUserLoggedIn(): Boolean {
-        return repository.isUserLoggedIn()
+    fun onNavigationComplete() {
+        _verificationId.value = null
     }
 }

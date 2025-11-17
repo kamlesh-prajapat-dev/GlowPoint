@@ -5,7 +5,19 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 
 interface AuthRepository {
-    fun sendVerificationCode(phoneNumber: String, activity: Activity, callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks)
+    fun sendVerificationCode(
+        phoneNumber: String,
+        activity: Activity,
+        callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    )
+
+    fun resendVerificationCode(
+        phoneNumber: String,
+        activity: Activity,
+        token: PhoneAuthProvider.ForceResendingToken,
+        callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    )
+
     fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, onResult: (AuthResult) -> Unit)
     fun isUserLoggedIn(): Boolean
     fun logout()

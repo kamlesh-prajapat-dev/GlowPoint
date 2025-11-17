@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.glowpoint.R
 import com.example.glowpoint.databinding.FragmentLoginBinding
-import com.example.glowpoint.ui.viewmodel.LoginViewModel
+import com.example.glowpoint.ui.viewmodel.AuthViewModel
 import com.example.glowpoint.util.LocaleHelper
 import com.example.glowpoint.util.NetworkUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,7 +21,7 @@ class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: AuthViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,11 +43,11 @@ class LoginFragment : Fragment() {
 
         binding.sendCodeButton.setOnClickListener {
             if (NetworkUtils.isInternetAvailable(requireContext())) {
-                val phoneNumber = "+91" + viewModel.phoneNumber.value?.trim()
-                if (phoneNumber.isNotEmpty() && phoneNumber.length == 13) {
-                    viewModel.sendVerificationCode(phoneNumber, requireActivity())
+                val phoneNumber = viewModel.phoneNumber.value?.trim()
+                if (!phoneNumber.isNullOrEmpty() && phoneNumber.length == 10) {
+                    viewModel.sendVerificationCode(requireActivity())
                 } else {
-                    Toast.makeText(requireContext(), "Please enter a valid phone number", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Please enter a valid 10-digit phone number", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 showNoInternetDialog()
@@ -57,17 +57,11 @@ class LoginFragment : Fragment() {
         observeViewModel()
     }
 
-    override fun onStart() {
-        super.onStart()
-        if (viewModel.isUserLoggedIn()) {
-            findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-        }
-    }
-
     private fun observeViewModel() {
-        viewModel.verificationId.observe(viewLifecycleOwner) {
-            val action = LoginFragmentDirections.actionLoginFragmentToOtpFragment(it)
-            findNavController().navigate(action)
+        viewModel.verificationId.observe(viewLifecycleOwner) { verificationId ->
+            verificationId?.let {
+                findNavController().navigate(R.id.action_loginFragment_to_otpFragment)
+            }
         }
 
         viewModel.error.observe(viewLifecycleOwner) {

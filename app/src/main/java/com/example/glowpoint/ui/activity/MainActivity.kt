@@ -30,11 +30,11 @@ class MainActivity : AppCompatActivity() {
             if (destination.id == R.id.splashFragment) {
                 supportActionBar?.hide()
             } else {
+                supportActionBar?.title = getString(R.string.app_name)
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
                 supportActionBar?.show()
             }
         }
-
-        setupActionBarWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {

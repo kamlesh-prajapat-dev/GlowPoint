@@ -30,6 +30,22 @@ class AuthRepositoryImpl @Inject constructor(
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
+    override fun resendVerificationCode(
+        phoneNumber: String,
+        activity: Activity,
+        token: PhoneAuthProvider.ForceResendingToken,
+        callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    ) {
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phoneNumber)
+            .setTimeout(60L, TimeUnit.SECONDS)
+            .setActivity(activity)
+            .setCallbacks(callbacks)
+            .setForceResendingToken(token)
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
     override fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, onResult: (AuthResult) -> Unit) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener { task ->

@@ -31,25 +31,56 @@
         android:hint="@string/verification_code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+        app:layout_constraintTop_toBottomOf="@id/titleTextView">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/verificationCodeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
-            android:maxLength="10"/>
+            android:maxLength="6" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/resend_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/verificationCodeLayout"
+        app:layout_constraintStart_toStartOf="@+id/verificationCodeLayout"
+        app:layout_constraintTop_toBottomOf="@id/verificationCodeLayout">
+
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            tools:text="Resend in 00:60" />
+
+        <TextView
+            android:id="@+id/resendCodeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/resend_code_btn"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </LinearLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/verifyButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/verify_login"
-        app:layout_constraintEnd_toEndOf="@+id/verificationCodeLayout"
-        app:layout_constraintStart_toStartOf="@+id/verificationCodeLayout"
-        app:layout_constraintTop_toBottomOf="@+id/verificationCodeLayout" />
+        app:layout_constraintEnd_toEndOf="@id/verificationCodeLayout"
+        app:layout_constraintStart_toStartOf="@id/verificationCodeLayout"
+        app:layout_constraintTop_toBottomOf="@id/resend_container" />
 
     <ProgressBar
         android:id="@+id/progressBar"
