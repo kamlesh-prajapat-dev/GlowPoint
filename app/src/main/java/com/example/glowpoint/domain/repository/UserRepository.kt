@@ -4,4 +4,6 @@ import com.example.glowpoint.data.models.User
 
 interface UserRepository {
     suspend fun createUser(user: User, onResult: (Boolean) -> Unit)
+
+    suspend fun getUserByPhoneNumber(phoneNumber: String?): User?
 }

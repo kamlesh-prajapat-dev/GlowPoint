@@ -2,8 +2,9 @@ package com.example.glowpoint.data.repository
 
 import android.app.Activity
 import com.example.glowpoint.domain.repository.AuthRepository
-import com.example.glowpoint.domain.repository.AuthResult
+import com.example.glowpoint.domain.model.AuthResult
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
@@ -44,6 +45,10 @@ class AuthRepositoryImpl @Inject constructor(
             .setForceResendingToken(token)
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
+    }
+
+    override fun getCurrentUser(): FirebaseUser? {
+        return auth.currentUser
     }
 
     override fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, onResult: (AuthResult) -> Unit) {

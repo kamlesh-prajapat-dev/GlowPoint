@@ -17,7 +17,7 @@
     <string name="verify_login">Verify &amp; Login</string>
 
     <!-- Create Profile Screen -->
-    <string name="create_your_profile">Create Your Profile</string>
+    <string name="create_your_profile">Create Your Account</string>
     <string name="full_name">Full Name</string>
     <string name="email_address">Email Address</string>
     <string name="create_profile">Create Profile</string>
@@ -31,4 +31,9 @@
     <string name="check_internet_connection">Please check your internet connection and try again.</string>
     <string name="ok">OK</string>
     <string name="resend_code_btn">Resend Code</string>
+    <string name="recommendations">Recommendations</string>
+
+    <string name="addBtn_when_not_select">Add</string>
+    <string name="addBtn_when_elect">Added</string>
+    <string name="gender">Gender</string>
 </resources>

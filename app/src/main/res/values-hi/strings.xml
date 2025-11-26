@@ -1,33 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ग्लो पॉइंट</string>
-
-    <!-- Language Selection -->
-    <string name="select_language">भाषा चुनें</string>
-    <string name="english">अंग्रेजी</string>
-    <string name="hindi">हिंदी</string>
-
-    <!-- Login Screen -->
-    <string name="login_with_phone">फोन से लॉगिन करें</string>
-    <string name="phone_number">फ़ोन नंबर</string>
-    <string name="send_code">कोड भेजें</string>
-
-    <!-- OTP Screen -->
-    <string name="enter_otp">ओटीपी दर्ज करें</string>
-    <string name="verification_code">प्रमाणीकरण कोड</string>
-    <string name="verify_login">सत्यापित करें और लॉगिन करें</string>
-
-    <!-- Create Profile Screen -->
-    <string name="create_your_profile">अपनी प्रोफ़ाइल बनाएं</string>
-    <string name="full_name">पूरा नाम</string>
-    <string name="email_address">ईमेल पता</string>
-    <string name="create_profile">प्रोफ़ाइल बनाएं</string>
-
-    <!-- Home Screen -->
-    <string name="welcome_message">ग्लोपॉइंट में आपका स्वागत है!</string>
+    <string name="app_name">ग्लोपॉइंट</string>
     <string name="logout">लॉग आउट</string>
-
-    <!-- No Internet Dialog -->
-    <string name="no_internet_connection">कोई इंटरनेट कनेक्शन नहीं</string>
-    <string name="check_internet_connection">कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।</string>
-    <string name="ok">ठीक है</string>
 </resources>

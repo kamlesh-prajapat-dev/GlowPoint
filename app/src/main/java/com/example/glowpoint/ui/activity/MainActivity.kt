@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.glowpoint.R
 import com.example.glowpoint.databinding.ActivityMainBinding
 import com.example.glowpoint.util.LocaleHelper
@@ -25,20 +24,6 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.splashFragment) {
-                supportActionBar?.hide()
-            } else {
-                supportActionBar?.title = getString(R.string.app_name)
-                supportActionBar?.setDisplayHomeAsUpEnabled(false)
-                supportActionBar?.show()
-            }
-        }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     override fun attachBaseContext(newBase: Context) {

@@ -2,9 +2,13 @@ package com.example.glowpoint.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.content.edit
 import java.util.Locale
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 object LocaleHelper {
 
     private const val SELECTED_LANGUAGE = "Locale.Helper.Selected.Language"
@@ -18,8 +22,7 @@ object LocaleHelper {
 
     // This returns the persisted language, or null if no language has been chosen by the user.
     fun getLanguage(context: Context): String? {
-        val preferences = getPreferences(context)
-        return preferences.getString(SELECTED_LANGUAGE, null)
+        return getPreferences(context).getString(SELECTED_LANGUAGE, null)
     }
 
     // This should be called when the user explicitly chooses a language.
@@ -30,8 +33,7 @@ object LocaleHelper {
     }
 
     private fun persist(context: Context, language: String?) {
-        val preferences = getPreferences(context)
-        preferences.edit {
+        getPreferences(context).edit {
             putString(SELECTED_LANGUAGE, language)
         }
     }

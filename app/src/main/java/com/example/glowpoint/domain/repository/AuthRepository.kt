@@ -1,6 +1,8 @@
 package com.example.glowpoint.domain.repository
 
 import android.app.Activity
+import com.example.glowpoint.domain.model.AuthResult
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 
@@ -17,6 +19,8 @@ interface AuthRepository {
         token: PhoneAuthProvider.ForceResendingToken,
         callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     )
+
+    fun getCurrentUser(): FirebaseUser?
 
     fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, onResult: (AuthResult) -> Unit)
     fun isUserLoggedIn(): Boolean

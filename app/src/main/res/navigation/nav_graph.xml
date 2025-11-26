@@ -20,6 +20,12 @@
             app:destination="@id/homeFragment"
             app:popUpTo="@id/splashFragment"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_splashFragment_to_locationFragment"
+            app:destination="@id/locationFragment"
+            app:popUpTo="@id/splashFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -30,6 +36,24 @@
         <action
             android:id="@+id/action_loginFragment_to_otpFragment"
             app:destination="@id/otpFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.example.glowpoint.ui.fragments.RegisterFragment"
+        android:label="RegisterFragment"
+        tools:layout="@layout/fragment_register">
+        <action
+            android:id="@+id/action_registerFragment_to_otpFragment"
+            app:destination="@id/otpFragment" />
+
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment"/>
     </fragment>
 
     <fragment
@@ -37,31 +61,29 @@
         android:name="com.example.glowpoint.ui.fragments.OtpFragment"
         android:label="OtpFragment"
         tools:layout="@layout/fragment_otp">
-        <argument
-            android:name="verificationId"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_otpFragment_to_createProfileFragment"
-            app:destination="@id/createProfileFragment"
-            app:popUpTo="@id/otpFragment"
-            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_otpFragment_to_homeFragment"
             app:destination="@id/homeFragment"
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_otpFragment_to_locationFragment"
+            app:destination="@id/locationFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
-        android:id="@+id/createProfileFragment"
-        android:name="com.example.glowpoint.ui.fragments.CreateProfileFragment"
-        android:label="CreateProfileFragment"
-        tools:layout="@layout/fragment_create_profile">
+        android:id="@+id/locationFragment"
+        android:name="com.example.glowpoint.ui.fragments.LocationFragment"
+        android:label="fragment_location"
+        tools:layout="@layout/fragment_location">
         <action
-            android:id="@+id/action_createProfileFragment_to_homeFragment"
+            android:id="@+id/action_locationFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/createProfileFragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/locationFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 
     <fragment
@@ -74,6 +96,40 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_shopsContainerFragment_to_eachShopFragment"
+            app:destination="@id/eachShopFragment" />
+
+        <action
+            android:id="@+id/action_homeFragment_to_shopsFragment"
+            app:destination="@+id/shopFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/shopFragment"
+        android:name="com.example.glowpoint.ui.fragments.ShopsFragment"
+        android:label="ShopsFragment"
+        tools:layout="@layout/fragment_shops">
+
+        <action
+            android:id="@+id/action_shopsFragment_to_eachShopFragment"
+            app:destination="@id/eachShopFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/eachShopFragment"
+        android:name="com.example.glowpoint.ui.fragments.EachShopFragment"
+        android:label="EachShop"
+        tools:layout="@layout/fragment_each_shop">
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/shopContainerFragment"
+        android:name="com.example.glowpoint.ui.fragments.ShopsContainerFragment"
+        android:label="ShopsContainerFragment"
+        tools:layout="@layout/fragment_shops_container">
     </fragment>
 
 </navigation>

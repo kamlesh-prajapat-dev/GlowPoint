@@ -9,7 +9,9 @@ import com.example.glowpoint.databinding.DialogLanguageSelectionBinding
 import com.example.glowpoint.ui.adapter.LanguageAdapter
 import com.example.glowpoint.util.LocaleHelper
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LanguageSelectionDialogFragment : BottomSheetDialogFragment() {
 
     private var _binding: DialogLanguageSelectionBinding? = null

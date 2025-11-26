@@ -15,10 +15,10 @@ import com.example.glowpoint.ui.viewmodel.AuthViewModel
 import com.example.glowpoint.util.LocaleHelper
 import com.example.glowpoint.util.NetworkUtils
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class LoginFragment : Fragment() {
-
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private val viewModel: AuthViewModel by activityViewModels()
@@ -42,10 +42,10 @@ class LoginFragment : Fragment() {
         }
 
         binding.sendCodeButton.setOnClickListener {
-            if (NetworkUtils.isInternetAvailable(requireContext())) {
+            if (viewModel.isInternetAvailable()) {
                 val phoneNumber = viewModel.phoneNumber.value?.trim()
                 if (!phoneNumber.isNullOrEmpty() && phoneNumber.length == 10) {
-                    viewModel.sendVerificationCode(requireActivity())
+                    viewModel.loginUser(requireActivity())
                 } else {
                     Toast.makeText(requireContext(), "Please enter a valid 10-digit phone number", Toast.LENGTH_SHORT).show()
                 }
@@ -53,10 +53,12 @@ class LoginFragment : Fragment() {
                 showNoInternetDialog()
             }
         }
-
+        binding.registerButton.setOnClickListener {
+            viewModel.reset()
+            findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
+        }
         observeViewModel()
     }
-
     private fun observeViewModel() {
         viewModel.verificationId.observe(viewLifecycleOwner) { verificationId ->
             verificationId?.let {
@@ -65,10 +67,11 @@ class LoginFragment : Fragment() {
         }
 
         viewModel.error.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            if (it != null) {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
         }
     }
-
     private fun showNoInternetDialog() {
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.no_internet_connection)

@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.navigation.safeargs)
+    id("org.jetbrains.kotlin.plugin.parcelize")
 
     id("com.google.gms.google-services")
 
@@ -52,10 +53,15 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.legacy.support.v4)
+    implementation(libs.androidx.fragment.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+
+    // Location
+    implementation(libs.play.services.location)
 
     // Firebase Bom
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
@@ -80,4 +86,13 @@ dependencies {
     // ViewModel and LiveData
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
+
+    implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+    // GeoFire
+    implementation("com.firebase:geofire-android:3.2.0")
+    implementation(libs.play.services.maps)
+
+    // Gson
+    implementation("com.google.code.gson:gson:2.10.1")
 }

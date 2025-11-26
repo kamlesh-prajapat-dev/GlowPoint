@@ -42,13 +42,15 @@ class SplashFragment : Fragment() {
                     .build()
                 findNavController().navigate(R.id.action_splashFragment_to_loginFragment, null, navOptions)
             }
-        }, 2000) // 3 seconds delay
+        }, 2000)
     }
 
     override fun onStart() {
         super.onStart()
-        if (viewModel.isUserLoggedIn()) {
+        if (viewModel.isUserLoggedIn() && viewModel.getLocation().isNotEmpty()) {
             findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
+        } else if (viewModel.isUserLoggedIn() && viewModel.getLocation().isEmpty()) {
+            findNavController().navigate(R.id.action_splashFragment_to_locationFragment)
         }
     }
 

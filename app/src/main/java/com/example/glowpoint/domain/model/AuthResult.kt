@@ -1,4 +1,4 @@
-package com.example.glowpoint.domain.repository
+package com.example.glowpoint.domain.model
 
 import java.lang.Exception
 
