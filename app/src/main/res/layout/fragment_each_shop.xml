@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.fragments.EachShopFragment">
+    tools:context=".ui.screens.eachshop.EachShopFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -25,7 +25,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginBottom="80dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -111,7 +112,8 @@
             <androidx.core.widget.NestedScrollView
                 android:id="@+id/nestedServicesContainer"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintHeight_max="300dp"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -132,23 +134,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
                 android:text="Available Time Slots"
                 android:textAppearance="?attr/textAppearanceHeadline6"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nestedServicesContainer" />
+                app:layout_constraintTop_toBottomOf="@id/nestedServicesContainer"
+                app:layout_constraintBottom_toTopOf="@+id/timeSlotsRecycler"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/timeSlotsRecycler"
-                android:layout_width="0dp"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/timeSlotChipGroup"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="4"
+                app:singleSelection="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/timeSlotTitle"
-                tools:itemCount="16"
-                tools:listitem="@layout/time_slot_chip" />
+                app:layout_constraintTop_toBottomOf="@id/timeSlotTitle">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/timeSlotsRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:spanCount="4"
+                    tools:itemCount="16"
+                    tools:listitem="@layout/time_slot_chip" />
+            </com.google.android.material.chip.ChipGroup>
 
             <!-- Loading Indicator -->
             <ProgressBar
@@ -237,8 +248,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:text="Book Slots"
+        android:text="Book Slot"
         app:icon="@drawable/ic_booking"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

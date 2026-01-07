@@ -7,16 +7,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.glowpoint.R
-import com.example.glowpoint.data.models.SalonModel
+import com.example.glowpoint.data.models.ShopDetails
 import com.example.glowpoint.databinding.ShopItemBinding
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeParseException
-import java.util.Locale
 
 class RecyclerViewShopAdapter(
-    private val onShopClick: (SalonModel) -> Unit
-) : ListAdapter<SalonModel, RecyclerViewShopAdapter.ViewHolder>(ShopDiffCallback()) {
+    private val onShopClick: (ShopDetails) -> Unit
+) : ListAdapter<ShopDetails, RecyclerViewShopAdapter.ViewHolder>(ShopDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ShopItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -42,10 +41,10 @@ class RecyclerViewShopAdapter(
             }
         }
 
-        fun bind(salon: SalonModel) {
-            binding.shopName.text = salon.name ?: "Unnamed Salon"
-            binding.shopRatting.text = salon.rating?.toString() ?: "N/A"
-            binding.shopDistance.text = (salon.distance?.div(1000))?.let { "%.2f km away".format(it) } ?: ""
+        fun bind(salon: ShopDetails) {
+            binding.shopName.text = salon.name
+            binding.shopRatting.text = salon.rating.toString()
+            binding.shopDistance.text = (salon.distance.div(1000)).let { "%.2f km away".format(it) }
 
             val isOpen = isShopOpenNow(salon.openTime, salon.closeTime)
             val context = binding.root.context
@@ -82,12 +81,12 @@ class RecyclerViewShopAdapter(
     }
 }
 
-class ShopDiffCallback : DiffUtil.ItemCallback<SalonModel>() {
-    override fun areItemsTheSame(oldItem: SalonModel, newItem: SalonModel): Boolean {
+class ShopDiffCallback : DiffUtil.ItemCallback<ShopDetails>() {
+    override fun areItemsTheSame(oldItem: ShopDetails, newItem: ShopDetails): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: SalonModel, newItem: SalonModel): Boolean {
+    override fun areContentsTheSame(oldItem: ShopDetails, newItem: ShopDetails): Boolean {
         return oldItem == newItem
     }
 }

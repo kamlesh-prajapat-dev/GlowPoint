@@ -75,6 +75,9 @@ dependencies {
     // Firebase Firestore database
     implementation(libs.firebase.firestore)
 
+    // Firebase Database
+    implementation("com.google.firebase:firebase-database")
+
     // Hilt dependency
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)

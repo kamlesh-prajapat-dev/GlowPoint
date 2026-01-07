@@ -1,10 +1,12 @@
 package com.example.glowpoint.di
 
-import com.example.glowpoint.data.repository.AuthRepositoryImpl
-import com.example.glowpoint.data.repository.SalonRepositoryImpl
-import com.example.glowpoint.data.repository.SalonServiceRepositoryImpl
-import com.example.glowpoint.data.repository.UserRepositoryImpl
+import com.example.glowpoint.data.remote.AuthRepositoryImpl
+import com.example.glowpoint.data.remote.BookingRepositoryImpl
+import com.example.glowpoint.data.remote.ShopRepositoryImpl
+import com.example.glowpoint.data.remote.SalonServiceRepositoryImpl
+import com.example.glowpoint.data.remote.UserRepositoryImpl
 import com.example.glowpoint.domain.repository.AuthRepository
+import com.example.glowpoint.domain.repository.BookingRepository
 import com.example.glowpoint.domain.repository.SalonRepository
 import com.example.glowpoint.domain.repository.SalonServiceRepository
 import com.example.glowpoint.domain.repository.UserRepository
@@ -24,8 +26,11 @@ abstract class RepositoryModule {
     abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 
     @Binds
-    abstract fun bindSalonRepository(impl: SalonRepositoryImpl): SalonRepository
+    abstract fun bindSalonRepository(impl: ShopRepositoryImpl): SalonRepository
 
     @Binds
     abstract fun bindSalonServiceRepository(impl: SalonServiceRepositoryImpl): SalonServiceRepository
+
+    @Binds
+    abstract fun bindBookingRepository(impl: BookingRepositoryImpl): BookingRepository
 }

@@ -12,7 +12,7 @@
     <string name="send_code">Send Code</string>
 
     <!-- OTP Screen -->
-    <string name="enter_otp">Enter OTP</string>
+    <string name="enter_otp">Please enter the 6 digit code from the SMS sent to your phone</string>
     <string name="verification_code">Verification Code</string>
     <string name="verify_login">Verify &amp; Login</string>
 

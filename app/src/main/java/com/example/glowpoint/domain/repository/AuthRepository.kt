@@ -22,7 +22,8 @@ interface AuthRepository {
 
     fun getCurrentUser(): FirebaseUser?
 
-    fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential, onResult: (AuthResult) -> Unit)
+    suspend fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential): AuthResult
+
     fun isUserLoggedIn(): Boolean
     fun logout()
 }

@@ -1,10 +1,7 @@
 package com.example.glowpoint.data.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
 data class TimeSlot(
-    val time: String,
-    val isAvailable: Boolean,
+    val time: String = "",
+    val isAvailable: Boolean = false,
     var isSelected: Boolean = false
 )

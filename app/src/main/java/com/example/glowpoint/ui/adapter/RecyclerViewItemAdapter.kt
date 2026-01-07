@@ -1,5 +1,6 @@
 package com.example.glowpoint.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
@@ -8,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.glowpoint.R
 import com.example.glowpoint.databinding.ServiceItemBinding
-import com.example.glowpoint.domain.model.ServiceItem
+import com.example.glowpoint.data.models.ServiceItem
 
 class RecyclerViewItemAdapter(
     private val onAddClick: (ServiceItem, genderCategory: Boolean) -> Unit
@@ -27,10 +28,11 @@ class RecyclerViewItemAdapter(
     inner class ViewHolder(private val binding: ServiceItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
+        @SuppressLint("SetTextI18n")
         fun bind(item: ServiceItem) {
             binding.serviceName.text = item.name
             binding.serviceDescription.text = item.description
-            binding.servicePrice.text = item.price.toString()
+            binding.servicePrice.text = "₹ " + item.price.toString()
             binding.serviceDuration.text = item.duration
 
             val context = binding.root.context
@@ -56,7 +58,7 @@ class RecyclerViewItemAdapter(
 
 class ServiceItemDiffCallback : DiffUtil.ItemCallback<ServiceItem>() {
     override fun areItemsTheSame(oldItem: ServiceItem, newItem: ServiceItem): Boolean {
-        return oldItem.id == newItem.id // Assuming name is unique, or use a unique ID
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(oldItem: ServiceItem, newItem: ServiceItem): Boolean {

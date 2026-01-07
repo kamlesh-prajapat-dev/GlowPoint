@@ -1,10 +1,8 @@
 package com.example.glowpoint.domain.repository
 
-import com.example.glowpoint.domain.model.FetchSalonServicesResult
+import com.example.glowpoint.domain.model.SalonServicesResult
 
 interface SalonServiceRepository {
 
-    suspend fun getMenSalonServices(): FetchSalonServicesResult
-
-    suspend fun getWomenSalonServices(): FetchSalonServicesResult
+    suspend fun getServices(collectionName: String): SalonServicesResult
 }

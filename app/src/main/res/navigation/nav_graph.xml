@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.example.glowpoint.ui.fragments.SplashFragment"
+        android:name="com.example.glowpoint.ui.screens.splash.SplashFragment"
         android:label="SplashFragment"
         tools:layout="@layout/fragment_splash">
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.glowpoint.ui.fragments.LoginFragment"
+        android:name="com.example.glowpoint.ui.screens.auth.login.LoginFragment"
         android:label="LoginFragment"
         tools:layout="@layout/fragment_login">
         <action
@@ -40,11 +40,23 @@
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
             app:destination="@id/registerFragment" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_locationFragment"
+            app:destination="@id/locationFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.glowpoint.ui.fragments.RegisterFragment"
+        android:name="com.example.glowpoint.ui.screens.auth.register.RegisterFragment"
         android:label="RegisterFragment"
         tools:layout="@layout/fragment_register">
         <action
@@ -54,11 +66,23 @@
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
             app:destination="@id/loginFragment"/>
+
+        <action
+            android:id="@+id/action_registerFragment_to_locationFragment"
+            app:destination="@id/locationFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_registerFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/otpFragment"
-        android:name="com.example.glowpoint.ui.fragments.OtpFragment"
+        android:name="com.example.glowpoint.ui.screens.auth.otp.OtpFragment"
         android:label="OtpFragment"
         tools:layout="@layout/fragment_otp">
         <action
@@ -76,7 +100,7 @@
 
     <fragment
         android:id="@+id/locationFragment"
-        android:name="com.example.glowpoint.ui.fragments.LocationFragment"
+        android:name="com.example.glowpoint.ui.screens.location.LocationFragment"
         android:label="fragment_location"
         tools:layout="@layout/fragment_location">
         <action
@@ -88,7 +112,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.glowpoint.ui.fragments.HomeFragment"
+        android:name="com.example.glowpoint.ui.screens.home.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home">
         <action
@@ -104,11 +128,15 @@
         <action
             android:id="@+id/action_homeFragment_to_shopsFragment"
             app:destination="@+id/shopFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_bookingsFragment"
+            app:destination="@+id/bookingsFragment"/>
     </fragment>
 
     <fragment
         android:id="@+id/shopFragment"
-        android:name="com.example.glowpoint.ui.fragments.ShopsFragment"
+        android:name="com.example.glowpoint.ui.screens.shop.ShopsFragment"
         android:label="ShopsFragment"
         tools:layout="@layout/fragment_shops">
 
@@ -119,17 +147,52 @@
 
     <fragment
         android:id="@+id/eachShopFragment"
-        android:name="com.example.glowpoint.ui.fragments.EachShopFragment"
+        android:name="com.example.glowpoint.ui.screens.eachshop.EachShopFragment"
         android:label="EachShop"
         tools:layout="@layout/fragment_each_shop">
+
+        <action
+            android:id="@+id/action_eachShopFragment_to_bookingStatusFragment"
+            app:destination="@id/bookingStatusFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="false"/>
     </fragment>
 
 
     <fragment
         android:id="@+id/shopContainerFragment"
-        android:name="com.example.glowpoint.ui.fragments.ShopsContainerFragment"
+        android:name="com.example.glowpoint.ui.screens.components.shops.ShopsContainerFragment"
         android:label="ShopsContainerFragment"
         tools:layout="@layout/fragment_shops_container">
     </fragment>
+
+    <fragment
+        android:id="@+id/bookingsFragment"
+        android:name="com.example.glowpoint.ui.screens.bookings.BookingsFragment"
+        android:label="BookingsFragment"
+        tools:layout="@layout/fragment_bookings">
+
+        <action
+            android:id="@+id/action_bookingsFragment_to_bookingStatusFragment"
+            app:destination="@id/bookingStatusFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/bookingStatusFragment"
+        android:name="com.example.glowpoint.ui.screens.bookingStatus.BookingStatusFragment"
+        android:label="BookingStatusFragment"
+        tools:layout="@layout/fragment_booking_status"/>
+
+    <fragment
+        android:id="@+id/bookingSummaryFragment"
+        android:name="com.example.glowpoint.ui.screens.components.bookingsummary.BookingSummaryFragment"
+        android:label="BookingSummaryFragment"
+        tools:layout="@layout/fragment_booking_summary"/>
+
+    <fragment
+        android:id="@+id/action_account"
+        android:name="com.example.glowpoint.ui.screens.account.AccountFragment"
+        android:label="AccountFragment"
+        tools:layout="@layout/fragment_account"/>
 
 </navigation>

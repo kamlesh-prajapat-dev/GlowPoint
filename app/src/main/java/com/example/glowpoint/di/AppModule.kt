@@ -2,7 +2,8 @@ package com.example.glowpoint.di
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.glowpoint.data.database.local.LocalDatabase
+import com.example.glowpoint.data.local.LocalDatabase
+import com.example.glowpoint.util.LocaleHelper
 import com.example.glowpoint.util.NetworkUtils
 import dagger.Module
 import dagger.Provides
@@ -17,7 +18,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideLocalHelper(sharedPreferences: SharedPreferences): LocalDatabase {
+    fun provideLocalDatabase(sharedPreferences: SharedPreferences): LocalDatabase {
         return LocalDatabase(sharedPreferences)
     }
 

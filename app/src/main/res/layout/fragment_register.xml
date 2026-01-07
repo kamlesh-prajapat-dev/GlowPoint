@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.glowpoint.ui.viewmodel.AuthViewModel" />
+            type="com.example.glowpoint.ui.screens.auth.register.RegisterViewModel" />
         <import type="android.view.View"/>
     </data>
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ui.fragments.RegisterFragment">
+        tools:context=".ui.screens.auth.register.RegisterFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -64,9 +64,13 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="16dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             android:hint="@string/full_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:inputType="text"
-                android:text="@={viewModel.userName}"/>
+                android:text=""/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -88,6 +92,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:hint="@string/gender"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:layout_constraintEnd_toEndOf="@+id/nameLayout"
             app:layout_constraintStart_toStartOf="@+id/nameLayout"
             app:layout_constraintTop_toBottomOf="@+id/nameLayout">
@@ -105,7 +113,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Phone Nuber"
+            android:hint="Phone Number"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusBottomEnd="12dp"
             app:layout_constraintEnd_toEndOf="@+id/genderLayout"
             app:layout_constraintStart_toStartOf="@+id/genderLayout"
             app:layout_constraintTop_toBottomOf="@+id/genderLayout">
@@ -114,7 +126,7 @@
                 android:id="@+id/phoneNumberEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@={viewModel.phoneNumber}"
+                android:text=""
                 android:inputType="phone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -124,6 +136,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="Register"
+            app:cornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="@+id/phoneNumberLayout"
             app:layout_constraintStart_toStartOf="@+id/phoneNumberLayout"
             app:layout_constraintTop_toBottomOf="@+id/phoneNumberLayout" />
@@ -133,7 +146,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

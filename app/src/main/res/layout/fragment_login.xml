@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.glowpoint.ui.viewmodel.AuthViewModel" />
+            type="com.example.glowpoint.ui.screens.auth.login.LoginViewModel" />
         <import type="android.view.View"/>
     </data>
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        tools:context=".ui.fragments.LoginFragment">
+        tools:context=".ui.screens.auth.login.LoginFragment">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
@@ -63,14 +63,18 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
             android:hint="@string/phone_number"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.45">
+            app:layout_constraintVertical_bias="0.45" >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneNumberEditText"
@@ -78,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="phone"
                 android:maxLength="10"
-                android:text="@={viewModel.phoneNumber}" />
+                android:text="" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -87,6 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/send_code"
+            app:cornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="@+id/phoneNumberLayout"
             app:layout_constraintStart_toStartOf="@+id/phoneNumberLayout"
             app:layout_constraintTop_toBottomOf="@+id/phoneNumberLayout" />
@@ -107,7 +112,7 @@
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
