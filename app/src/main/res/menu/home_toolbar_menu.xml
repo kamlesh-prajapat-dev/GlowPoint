@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_bookings"
-        android:icon="@drawable/ic_cart"
+        android:icon="@drawable/ic_bookings"
         android:title="Cart"
         app:showAsAction="ifRoom"
         android:iconTint="@color/white"/>

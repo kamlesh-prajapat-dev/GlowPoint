@@ -48,6 +48,10 @@ class HomeFragment : Fragment(), ChildNavigationListener {
                 else -> false
             }
         }
+
+        binding.locationContainer.setOnClickListener {
+            viewModel.onSetUIState(HomeUIState.LocationState)
+        }
     }
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -90,7 +94,9 @@ class HomeFragment : Fragment(), ChildNavigationListener {
                     }
 
                     HomeUIState.LocationState -> {
-
+                        val action = HomeFragmentDirections.actionHomeFragmentToLocationFragment()
+                        findNavController().navigate(action)
+                        viewModel.onSetUIState(HomeUIState.Idle)
                     }
 
                     HomeUIState.ServiceState -> {

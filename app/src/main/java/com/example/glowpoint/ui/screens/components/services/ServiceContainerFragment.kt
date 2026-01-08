@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.glowpoint.R
 import com.example.glowpoint.databinding.FragmentServiceContainerBinding
 import com.example.glowpoint.data.models.ServiceItem
+import com.example.glowpoint.data.models.User
 import com.example.glowpoint.ui.adapter.RecyclerViewItemAdapter
 import com.example.glowpoint.ui.screens.home.HomeFragmentDirections
 import com.example.glowpoint.ui.sharedviewmodel.SharedForSearchShopsViewModel
@@ -113,19 +114,23 @@ class ServiceContainerFragment : Fragment() {
         }
     }
 
+    private fun genderToggle(user: User?) {
+        if (user != null) {
+            when (user.gender) {
+                "Male" -> binding.genderToggleGroup.check(R.id.menChip)
+                "Female" -> binding.genderToggleGroup.check(R.id.womenChip)
+            }
+        } else {
+            // Default to women if user is null for some reason
+            binding.genderToggleGroup.check(R.id.womenChip)
+        }
+    }
+
     private fun setupObservers() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.user.collect { user ->
-                    if (user != null) {
-                        when (user.gender) {
-                            "Male" -> binding.genderToggleGroup.check(R.id.menChip)
-                            "Female" -> binding.genderToggleGroup.check(R.id.womenChip)
-                        }
-                    } else {
-                        // Default to women if user is null for some reason
-                        binding.genderToggleGroup.check(R.id.womenChip)
-                    }
+                   genderToggle(user)
                 }
             }
         }
@@ -169,10 +174,16 @@ class ServiceContainerFragment : Fragment() {
                             if (services.isNotEmpty()) {
                                 if (genderCategory) {
                                     if (viewModel.menServices.value.isEmpty()) {
+                                        if (viewModel.womenServices.value.isEmpty()) {
+                                            viewModel.loadServices(false)
+                                        }
                                         viewModel.updateLiveData(it.services, true)
                                     }
                                 } else {
                                     if (viewModel.womenServices.value.isEmpty()) {
+                                        if (viewModel.menServices.value.isEmpty()) {
+                                            viewModel.loadServices(true)
+                                        }
                                         viewModel.updateLiveData(it.services, false)
                                     }
                                 }
@@ -188,11 +199,11 @@ class ServiceContainerFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.menServices.collect { if (it.isNotEmpty()) updateServiceList(it) }
+            viewModel.menServices.collect { if (it.isNotEmpty() && binding.genderToggleGroup.checkedChipId == binding.menChip.id) updateServiceList(it) }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.womenServices.collect { if (it.isNotEmpty()) updateServiceList(it) }
+            viewModel.womenServices.collect { if (it.isNotEmpty() && binding.genderToggleGroup.checkedChipId == binding.womenChip.id) updateServiceList(it) }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
