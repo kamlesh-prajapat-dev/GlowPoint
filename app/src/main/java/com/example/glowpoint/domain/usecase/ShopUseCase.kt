@@ -113,8 +113,8 @@ class ShopUseCase @Inject constructor(
 
     private fun checkGender(selectedServices: List<ServiceItem>): Int {
         return when {
-            selectedServices.all { it.isSelected } -> 0        // All true → Male
-            selectedServices.all { !it.isSelected } -> 1       // All false → Female
+            selectedServices.all { it.genderCategory } -> 0        // All true → Male
+            selectedServices.all { !it.genderCategory } -> 1       // All false → Female
             else -> 2                         // Mixed → Both
         }
     }
