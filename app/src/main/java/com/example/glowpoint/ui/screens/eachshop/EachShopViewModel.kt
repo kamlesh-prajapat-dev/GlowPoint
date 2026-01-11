@@ -43,7 +43,9 @@ class EachShopViewModel @Inject constructor(
     private val _salonServices = MutableStateFlow<List<ServiceItem>>(emptyList())
     val salonServices: StateFlow<List<ServiceItem>> get() = _salonServices.asStateFlow()
     private val _timeSlots = MutableStateFlow<List<TimeSlot>>(emptyList())
-    val timeSlots: StateFlow<List<TimeSlot>> get() = _timeSlots.asStateFlow()
+    private val _filteredSlots = MutableStateFlow<List<TimeSlot>>(emptyList())
+    val filteredSlots: StateFlow<List<TimeSlot>> get() = _filteredSlots.asStateFlow()
+
     private val _isVisibleBookSlotsButton = MutableStateFlow(false)
     val isVisibleBookSlotsButton: StateFlow<Boolean> get() = _isVisibleBookSlotsButton.asStateFlow()
 
@@ -123,7 +125,7 @@ class EachShopViewModel @Inject constructor(
                     price = it.price,
                     genderCategory = false
                 )
-            } // Ensure correct category
+            }
     }
 
     fun toggleServiceSelection(selectedService: ServiceItem, genderCategory: Boolean) {
@@ -140,11 +142,15 @@ class EachShopViewModel @Inject constructor(
 
     private fun updateTimeSlotVisibility() {
         val isAnyServiceSelected = _salonServices.value.any { it.isSelected }
+        if (isAnyServiceSelected) {
+            val baseSlots = _timeSlots.value
+            filterTimeSlotsByService(baseSlots)
+        }
         _isTimeSlotRecyclerViewVisible.value = isAnyServiceSelected
     }
 
     fun toggleTimeSlotSelection(selectedTimeSlot: TimeSlot) {
-        val currentTimeSlots = _timeSlots.value
+        val currentTimeSlots = _filteredSlots.value
         val updatedTimeSlots = currentTimeSlots.map {
             if (it.time == selectedTimeSlot.time) {
                 it.copy(isSelected = !it.isSelected)
@@ -152,13 +158,14 @@ class EachShopViewModel @Inject constructor(
                 it
             }
         }
-        _timeSlots.value = updatedTimeSlots
+        _filteredSlots.value = updatedTimeSlots
         updateBookButtonVisibility()
     }
 
     private fun updateBookButtonVisibility() {
         val isAnyServiceSelected = _salonServices.value.any { it.isSelected }
-        val isAnyTimeSlotSelected = _timeSlots.value.any { it.isSelected }
+        val isAnyTimeSlotSelected = _filteredSlots.value.any { it.isSelected }
+
         _isVisibleBookSlotsButton.value = isAnyServiceSelected && isAnyTimeSlotSelected
     }
 
@@ -206,24 +213,51 @@ class EachShopViewModel @Inject constructor(
         val generatedSlots = _timeSlots.value
         val currentIndex = getCurrentSlotIndex(generatedSlots)
 
-        _timeSlots.value = generatedSlots.mapIndexed { index, slot ->
+        // First pass: base availability
+        val baseSlots = generatedSlots.mapIndexed { index, slot ->
             when {
-                // past + current + next slot
                 index <= currentIndex + 1 ->
                     slot.copy(isAvailable = false)
 
-                // future slots → Firebase decides
                 else -> {
                     val firebaseSlot = firebaseSlots.find { it.time == slot.time }
                     slot.copy(isAvailable = firebaseSlot?.isAvailable ?: false)
                 }
             }
         }
+
+        _timeSlots.value = baseSlots
+        // Second pass: continuity check
+        filterTimeSlotsByService(baseSlots)
+    }
+
+    private fun filterTimeSlotsByService(baseSlots: List<TimeSlot>) {
+        if (baseSlots.isEmpty()) return
+
+        val requiredSlots = _salonServices.value.count { it.isSelected }
+
+        if (requiredSlots <= 1) {
+            _filteredSlots.value = baseSlots
+            return
+        }
+
+//        val finalSlots = baseSlots.mapIndexed { index, slot ->
+//            if (!slot.isAvailable) return@mapIndexed slot
+//
+//            val canFitAllServices =
+//                (index until index + requiredSlots).all { i ->
+//                    i < baseSlots.size && baseSlots[i].isAvailable
+//                }
+//
+//            slot.copy(isAvailable = canFitAllServices)
+//        }
+
+        _filteredSlots.value = baseSlots
     }
 
 
     fun getSelectedTimeSlots(): List<TimeSlot> {
-        return _timeSlots.value.filter { it.isSelected }
+        return _filteredSlots.value.filter { it.isSelected }
     }
 
     fun getSelectedSalonServices(): List<ServiceItem> {

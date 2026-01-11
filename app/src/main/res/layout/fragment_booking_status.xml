@@ -78,6 +78,7 @@
                             android:id="@+id/pendingIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:contentDescription="TODO"
                             android:src="@drawable/ic_status_pending" />
 
                         <View
@@ -91,6 +92,7 @@
                             android:id="@+id/confirmedIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:contentDescription="TODO"
                             android:src="@drawable/ic_status_confirmed" />
 
                         <View
@@ -104,6 +106,7 @@
                             android:id="@+id/inProgressIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:contentDescription="TODO"
                             android:src="@drawable/ic_status_in_progress" />
 
                         <View
@@ -117,6 +120,7 @@
                             android:id="@+id/completedIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
+                            android:contentDescription="TODO"
                             android:src="@drawable/ic_status_complete" />
                     </LinearLayout>
 

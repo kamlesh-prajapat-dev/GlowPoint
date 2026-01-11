@@ -25,7 +25,7 @@ class ShopUseCase @Inject constructor(
     private val localDatabase: LocalDatabase
 ) {
     private val earthRadius = 6371000.0 // Earth radius in meters
-    private val radiusInMeters: Double = 500000.0
+    private val radiusInMeters: Double = 5000000.0
 
     fun observeTimeSlot(salonId: String, date: Long, openTime: String, closeTime: String): Flow<EachShopUIState> {
         return shopRepository.observeTimeSlot(salonId, date, openTime, closeTime)

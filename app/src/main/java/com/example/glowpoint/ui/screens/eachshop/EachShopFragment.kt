@@ -136,7 +136,7 @@ class EachShopFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.timeSlots.collect {
+                viewModel.filteredSlots.collect {
                     if (it.isNotEmpty()) {
                         timeSlotAdapter.submitList(it)
                     }
@@ -169,10 +169,14 @@ class EachShopFragment : Fragment() {
         binding.bookSlotsButton.setOnClickListener {
             val selectedTimeSlots = viewModel.getSelectedTimeSlots()
             val selectedServices = viewModel.getSelectedSalonServices()
-            sharedESToBSViewModel.setBookingDetails(selectedServices, viewModel.salon.value, selectedTimeSlots, viewModel.user.value)
+            if(selectedServices.size == selectedTimeSlots.size) {
+                sharedESToBSViewModel.setBookingDetails(selectedServices, viewModel.salon.value, selectedTimeSlots, viewModel.user.value)
 
-            val bottomSheet = BookingSummaryFragment()
-            bottomSheet.show(parentFragmentManager, "BookingSummaryFragment")
+                val bottomSheet = BookingSummaryFragment()
+                bottomSheet.show(parentFragmentManager, "BookingSummaryFragment")
+            } else {
+                Toast.makeText(requireContext(), "Please make sure selected time slots and services are same.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         parentFragmentManager.setFragmentResultListener(
