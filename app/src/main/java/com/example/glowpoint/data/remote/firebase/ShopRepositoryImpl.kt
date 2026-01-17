@@ -1,11 +1,12 @@
-package com.example.glowpoint.data.remote
+package com.example.glowpoint.data.remote.firebase
 
 import android.util.Log
 import com.example.glowpoint.data.models.ShopDetails
 import com.example.glowpoint.data.models.TimeSlot
 import com.example.glowpoint.domain.model.FetchSalonsResult
 import com.example.glowpoint.domain.repository.SalonRepository
-import com.example.glowpoint.util.BookingStatus
+import com.example.glowpoint.util.DateTimeFormateConstant
+import com.example.glowpoint.util.SalonRepositoryConstant
 import com.example.glowpoint.util.TimeSlotStatus
 import com.firebase.geofire.GeoQueryBounds
 import com.google.firebase.database.DataSnapshot
@@ -44,8 +45,8 @@ class ShopRepositoryImpl @Inject constructor(
         try {
             val snapshots = bounds.map { b ->
                 async {
-                    firestore.collection("salons")
-                        .orderBy("geoHash")
+                    firestore.collection(SalonRepositoryConstant.COLLECTION)
+                        .orderBy(SalonRepositoryConstant.GEO_HASH)
                         .startAt(b.startHash)
                         .endAt(b.endHash)
                         .limit(maxResults)
@@ -82,7 +83,7 @@ class ShopRepositoryImpl @Inject constructor(
 
         val currentDate = formatDate(date)
         val ref = realtimeDatabase
-            .getReference("timeSlots")
+            .getReference(SalonRepositoryConstant.TIME_SLOTS_COLLECTION)
             .child(salonId)
             .child(currentDate)
 
@@ -140,7 +141,7 @@ class ShopRepositoryImpl @Inject constructor(
     }
 
     private fun formatDate(dateMillis: Long): String {
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val formatter = SimpleDateFormat(DateTimeFormateConstant.DATE_FORMATE, Locale.US)
         return formatter.format(Date(dateMillis))
     }
 
@@ -149,7 +150,7 @@ class ShopRepositoryImpl @Inject constructor(
         closeTime: String
     ): Map<String, String> {
 
-        val formatter = SimpleDateFormat("HH:mm", Locale.US)
+        val formatter = SimpleDateFormat(DateTimeFormateConstant.TIME_FORMATE, Locale.US)
         formatter.isLenient = false
 
         val start = Calendar.getInstance().apply {
@@ -181,7 +182,7 @@ class ShopRepositoryImpl @Inject constructor(
             val currentDate = formatDate(date)
 
             val ref = realtimeDatabase
-                .getReference("timeSlots")
+                .getReference(SalonRepositoryConstant.TIME_SLOTS_COLLECTION)
                 .child(salonId)
                 .child(currentDate)
 
@@ -201,6 +202,4 @@ class ShopRepositoryImpl @Inject constructor(
             FetchSalonsResult.Failure(e)
         }
     }
-
-
 }

@@ -136,6 +136,11 @@
         <action
             android:id="@+id/action_homeFragment_to_LocationFragment"
             app:destination="@+id/locationFragment"/>
+
+        <action
+            android:id="@+id/action_homeFragment_to_accountFragment"
+            app:destination="@+id/accountFragment"/>
+
     </fragment>
 
     <fragment
@@ -171,6 +176,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/serviceContainerFragment"
+        android:name="com.example.glowpoint.ui.screens.components.services.ServiceContainerFragment"
+        android:label="ServiceContainerFragment"
+        tools:layout="@layout/fragment_service_container">
+    </fragment>
+
+    <fragment
         android:id="@+id/bookingsFragment"
         android:name="com.example.glowpoint.ui.screens.bookings.BookingsFragment"
         android:label="BookingsFragment"
@@ -185,18 +197,28 @@
         android:id="@+id/bookingStatusFragment"
         android:name="com.example.glowpoint.ui.screens.bookingStatus.BookingStatusFragment"
         android:label="BookingStatusFragment"
-        tools:layout="@layout/fragment_booking_status"/>
+        tools:layout="@layout/fragment_booking_status">
+
+    </fragment>
 
     <fragment
         android:id="@+id/bookingSummaryFragment"
         android:name="com.example.glowpoint.ui.screens.components.bookingsummary.BookingSummaryFragment"
         android:label="BookingSummaryFragment"
-        tools:layout="@layout/fragment_booking_summary"/>
+        tools:layout="@layout/fragment_booking_summary">
+
+    </fragment>
 
     <fragment
-        android:id="@+id/action_account"
+        android:id="@+id/accountFragment"
         android:name="com.example.glowpoint.ui.screens.account.AccountFragment"
         android:label="AccountFragment"
-        tools:layout="@layout/fragment_account"/>
+        tools:layout="@layout/fragment_account">
+        <action
+            android:id="@+id/action_accountFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

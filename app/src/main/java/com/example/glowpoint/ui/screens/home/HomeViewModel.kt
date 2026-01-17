@@ -56,6 +56,6 @@ class HomeViewModel @Inject constructor(
     val uiState: StateFlow<HomeUIState> get() = _uiState.asStateFlow()
 
     fun onSetUIState(uiState: HomeUIState) {
-        _uiState.update { uiState }
+        _uiState.value = uiState
     }
 }

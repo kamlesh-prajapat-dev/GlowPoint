@@ -1,9 +1,10 @@
-package com.example.glowpoint.data.remote
+package com.example.glowpoint.data.remote.firebase
 
 import com.example.glowpoint.data.models.BookingDetails
 import com.example.glowpoint.data.models.FetchedBooking
 import com.example.glowpoint.domain.model.BookingResult
 import com.example.glowpoint.domain.repository.BookingRepository
+import com.example.glowpoint.util.BookingRepositoryConstant
 import com.example.glowpoint.util.BookingStatus
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -23,7 +24,7 @@ class BookingRepositoryImpl @Inject constructor(
 ) : BookingRepository {
     override suspend fun bookServices(booking: BookingDetails): BookingResult {
         return try {
-            val ref = realtimeDatabase.getReference("bookings")
+            val ref = realtimeDatabase.getReference(BookingRepositoryConstant.COLLECTION_NAME)
 
             // Firebase generated bookingId
             val bookingId = ref.push().key
@@ -48,8 +49,8 @@ class BookingRepositoryImpl @Inject constructor(
         }
 
         val ref = realtimeDatabase
-            .getReference("bookings")
-            .orderByChild("userId")
+            .getReference(BookingRepositoryConstant.COLLECTION_NAME)
+            .orderByChild(BookingRepositoryConstant.USER_ID)
             .equalTo(userId)
 
         val listener = object : ValueEventListener {
@@ -97,7 +98,7 @@ class BookingRepositoryImpl @Inject constructor(
         }
 
         val ref = realtimeDatabase
-            .getReference("bookings")
+            .getReference(BookingRepositoryConstant.COLLECTION_NAME)
             .child(bookingId)
 
         val listener = object : ValueEventListener {
@@ -130,7 +131,7 @@ class BookingRepositoryImpl @Inject constructor(
     ): BookingResult {
         return try {
             val bookingRef = realtimeDatabase
-                .getReference("bookings")
+                .getReference(BookingRepositoryConstant.COLLECTION_NAME)
                 .child(bookingId)
 
             val snapshot = bookingRef.get().await()
@@ -139,8 +140,8 @@ class BookingRepositoryImpl @Inject constructor(
                 BookingResult.Failure(Exception("Booking not found"))
             } else {
                 val updates = mapOf(
-                    "bookingStatus" to BookingStatus.CANCELLED,
-                    "previousStatus" to previousStatus
+                    BookingRepositoryConstant.BOOKING_STATUS to BookingStatus.CANCELLED,
+                    BookingRepositoryConstant.PREVIOUS_STATUS to previousStatus
                 )
                 bookingRef.updateChildren(updates).await()
                 BookingResult.CancelSuccess(isSuccess = true)

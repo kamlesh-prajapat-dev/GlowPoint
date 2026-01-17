@@ -75,5 +75,6 @@ class ShopsFragment : Fragment(), ChildNavigationListener {
 
         parentChildForShopsContainerViewModel.reset()
         sharedForSearchShopsViewModel.reset()
+        sharedForEachSalonViewModel.reset()
     }
 }

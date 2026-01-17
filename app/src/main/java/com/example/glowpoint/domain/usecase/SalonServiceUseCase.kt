@@ -4,6 +4,7 @@ import com.example.glowpoint.data.local.LocalDatabase
 import com.example.glowpoint.domain.model.SalonServicesResult
 import com.example.glowpoint.domain.repository.SalonServiceRepository
 import com.example.glowpoint.ui.screens.components.services.ServiceContainerUIState
+import com.example.glowpoint.util.SalonServicesRepositoryConstant
 import javax.inject.Inject
 
 class SalonServiceUseCase @Inject constructor(
@@ -11,7 +12,7 @@ class SalonServiceUseCase @Inject constructor(
     private val localDatabase: LocalDatabase
 ) {
     suspend fun getMenSalonServices(): ServiceContainerUIState {
-        return when(val result = salonServiceRepository.getServices("men_services")) {
+        return when(val result = salonServiceRepository.getServices(SalonServicesRepositoryConstant.MEN_SERVICES_COLLECTION)) {
             is SalonServicesResult.Success -> {
                 val services = result.services
                 if (services.isNotEmpty()) {
@@ -27,7 +28,7 @@ class SalonServiceUseCase @Inject constructor(
     }
 
     suspend fun getWomenSalonServices(): ServiceContainerUIState {
-        return when(val result = salonServiceRepository.getServices("women_services")) {
+        return when(val result = salonServiceRepository.getServices(SalonServicesRepositoryConstant.WOMEN_SERVICES_COLLECTION)) {
             is SalonServicesResult.Success -> {
                 val services = result.services
                 if (services.isNotEmpty()) {

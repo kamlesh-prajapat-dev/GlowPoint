@@ -3,7 +3,6 @@ package com.example.glowpoint.domain.usecase
 import android.app.Activity
 import com.example.glowpoint.data.local.LocalDatabase
 import com.example.glowpoint.domain.repository.AuthRepository
-import com.example.glowpoint.domain.repository.UserRepository
 import com.example.glowpoint.domain.model.AuthResult
 import com.example.glowpoint.ui.screens.auth.login.LoginUIState
 import com.example.glowpoint.ui.screens.auth.otp.OtpUISate
@@ -33,6 +32,8 @@ class AuthUseCase @Inject constructor(
     fun isNetworkAvailable() = networkUtils.isInternetAvailable()
 
     fun isLocationSet() = localDatabase.isLocationSet()
+
+    fun getCachedUser() = localDatabase.getUser()
 
     fun sendVerificationCode(phoneNumber: String, activity: Activity, callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks) {
         authRepository.sendVerificationCode(phoneNumber, activity, callbacks)
@@ -78,4 +79,6 @@ class AuthUseCase @Inject constructor(
             }
         }
     }
+
+    fun logout() = authRepository.logout()
 }

@@ -1,8 +1,9 @@
-package com.example.glowpoint.data.remote
+package com.example.glowpoint.data.remote.firebase
 
 import com.example.glowpoint.data.models.User
 import com.example.glowpoint.domain.model.UserResult
 import com.example.glowpoint.domain.repository.UserRepository
+import com.example.glowpoint.util.UserRepositoryConstant
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -15,7 +16,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun createUser(user: User): UserResult {
         return try {
-            firestore.collection("users").document(user.uid)
+            firestore.collection(UserRepositoryConstant.COLLECTION_NAME).document(user.uid)
                 .set(user)
                 .await()
 
@@ -28,8 +29,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun getUserByPhoneNumber(phoneNumber: String): UserResult {
         return try {
             val snapshot = FirebaseFirestore.getInstance()
-                .collection("users")
-                .whereEqualTo("phoneNumber", phoneNumber)
+                .collection(UserRepositoryConstant.COLLECTION_NAME)
+                .whereEqualTo(UserRepositoryConstant.PHONE_NUMBER, phoneNumber)
                 .limit(1)
                 .get()
                 .await()

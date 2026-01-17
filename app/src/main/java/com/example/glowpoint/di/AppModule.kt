@@ -3,8 +3,10 @@ package com.example.glowpoint.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.glowpoint.data.local.LocalDatabase
+import com.example.glowpoint.domain.repository.NotificationRepository
 import com.example.glowpoint.util.LocaleHelper
 import com.example.glowpoint.util.NetworkUtils
+import com.example.glowpoint.util.NotificationHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,5 +34,17 @@ object AppModule {
     @Singleton
     fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
         return context.getSharedPreferences("GlowPointPrefs", Context.MODE_PRIVATE)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationHelper(): NotificationHelper {
+        return NotificationHelper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationRepository(): NotificationRepository {
+        return NotificationRepository()
     }
 }

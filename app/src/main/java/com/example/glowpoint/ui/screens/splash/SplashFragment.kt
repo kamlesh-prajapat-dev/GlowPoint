@@ -65,7 +65,7 @@ class SplashFragment : Fragment() {
         if (navigationJob?.isActive == true) return
 
         navigationJob = viewLifecycleOwner.lifecycleScope.launch {
-            delay(2000)
+            delay(3000)
             action()
         }
     }

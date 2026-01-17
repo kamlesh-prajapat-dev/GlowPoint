@@ -1,4 +1,4 @@
-package com.example.glowpoint.data.remote
+package com.example.glowpoint.data.remote.firebase
 
 import android.app.Activity
 import com.example.glowpoint.domain.repository.AuthRepository

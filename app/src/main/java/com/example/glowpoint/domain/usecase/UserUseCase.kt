@@ -6,16 +6,20 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.glowpoint.data.local.LocalDatabase
 import com.example.glowpoint.data.models.User
+import com.example.glowpoint.domain.model.TokenResult
 import com.example.glowpoint.domain.model.UserResult
+import com.example.glowpoint.domain.repository.TokenRepository
 import com.example.glowpoint.domain.repository.UserRepository
 import com.example.glowpoint.ui.screens.auth.login.LoginUIState
 import com.example.glowpoint.ui.screens.auth.otp.OtpUISate
 import com.example.glowpoint.ui.screens.auth.register.RegisterUIState
 import com.example.glowpoint.ui.screens.location.LocationUIState
+import com.example.glowpoint.util.TokenManager
 import javax.inject.Inject
 
 class UserUseCase @Inject constructor(
     private val userRepository: UserRepository,
+    private val tokenRepository: TokenRepository,
     private val localDatabase: LocalDatabase
 ) {
     suspend fun getUserByPhoneNumber(phoneNumber: String): LoginUIState {
@@ -24,6 +28,17 @@ class UserUseCase @Inject constructor(
                 val user = result.user
                 if (user != null) {
                     localDatabase.setUser(user = user)
+                    val token = TokenManager.getFCMToken()
+                    if (token != null) {
+                        when(val result = tokenRepository.saveFcmToken(userId = user.uid, token = token)) {
+                            is TokenResult.Success -> {
+
+                            }
+                            is TokenResult.Failure -> {
+
+                            }
+                        }
+                    }
                 }
                 LoginUIState.UserGetSuccess(result.user)
             }
@@ -52,6 +67,20 @@ class UserUseCase @Inject constructor(
         return when(val result = userRepository.createUser(user)) {
             is UserResult.Success -> {
                 localDatabase.setUser(user)
+                val token = TokenManager.getFCMToken()
+                if (token != null) {
+                    when(val result = tokenRepository.saveFcmToken(userId = user.uid, token = token)) {
+                        is TokenResult.Failure -> {
+
+                        }
+
+                        is TokenResult.Success -> {
+
+                        }
+                    }
+                } else {
+                    OtpUISate.Failure(Exception("Token not create due to failure."))
+                }
                 OtpUISate.CreateUserSuccess(result.user)
             }
 

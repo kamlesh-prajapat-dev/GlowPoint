@@ -187,6 +187,7 @@ class EachShopFragment : Fragment() {
             if (booking != null) {
                 Toast.makeText(requireContext(), "Booking Successful", Toast.LENGTH_LONG).show()
                 sharedBBSViewModel.onSetFetchedBooking(booking)
+                sharedViewModel.reset()
                 val action = EachShopFragmentDirections.actionEachShopFragmentToBookingStatusFragment()
                 findNavController().navigate(action)
             }

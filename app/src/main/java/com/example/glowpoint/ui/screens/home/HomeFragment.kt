@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.glowpoint.R
 import com.example.glowpoint.databinding.FragmentHomeBinding
@@ -75,36 +77,40 @@ class HomeFragment : Fragment(), ChildNavigationListener {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect {
-                setBottomNavChecked(it)
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    setBottomNavChecked(it)
 
-                when (it) {
-                    HomeUIState.AccountState -> {
+                    when (it) {
+                        HomeUIState.AccountState -> {
+                            val action = HomeFragmentDirections.actionHomeFragmentToAccountFragment()
+                            findNavController().navigate(action)
+                            viewModel.onSetUIState(HomeUIState.ServiceState)
+                        }
 
-                    }
+                        HomeUIState.BookingsState -> {
+                            val action = HomeFragmentDirections.actionHomeFragmentToBookingsFragment()
+                            findNavController().navigate(action)
+                            viewModel.onSetUIState(HomeUIState.Idle)
+                        }
 
-                    HomeUIState.BookingsState -> {
-                        val action = HomeFragmentDirections.actionHomeFragmentToBookingsFragment()
-                        findNavController().navigate(action)
-                        viewModel.onSetUIState(HomeUIState.Idle)
-                    }
+                        HomeUIState.Idle -> {
 
-                    HomeUIState.Idle -> {
+                        }
 
-                    }
+                        HomeUIState.LocationState -> {
+                            val action = HomeFragmentDirections.actionHomeFragmentToLocationFragment()
+                            findNavController().navigate(action)
+                            viewModel.onSetUIState(HomeUIState.Idle)
+                        }
 
-                    HomeUIState.LocationState -> {
-                        val action = HomeFragmentDirections.actionHomeFragmentToLocationFragment()
-                        findNavController().navigate(action)
-                        viewModel.onSetUIState(HomeUIState.Idle)
-                    }
+                        HomeUIState.ServiceState -> {
+                            replaceFragmentSafely(ServiceContainerFragment.newInstance(), ServiceContainerFragment.TAG)
+                        }
 
-                    HomeUIState.ServiceState -> {
-                        replaceFragmentSafely(ServiceContainerFragment.newInstance(), ServiceContainerFragment.TAG)
-                    }
-
-                    HomeUIState.ShopState -> {
-                        replaceFragmentSafely(ShopsContainerFragment(), ShopsContainerFragment.TAG)
+                        HomeUIState.ShopState -> {
+                            replaceFragmentSafely(ShopsContainerFragment(), ShopsContainerFragment.TAG)
+                        }
                     }
                 }
             }

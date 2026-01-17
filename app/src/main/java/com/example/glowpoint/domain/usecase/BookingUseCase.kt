@@ -1,16 +1,23 @@
 package com.example.glowpoint.domain.usecase
 
+import android.util.Log
 import com.example.glowpoint.data.local.LocalDatabase
 import com.example.glowpoint.data.models.BookingDetails
 import com.example.glowpoint.data.models.FetchedBooking
+import com.example.glowpoint.data.models.NotificationRequest
 import com.example.glowpoint.data.models.TimeSlot
 import com.example.glowpoint.domain.model.BookingResult
 import com.example.glowpoint.domain.model.FetchSalonsResult
+import com.example.glowpoint.domain.model.NotificationResult
+import com.example.glowpoint.domain.model.TokenResult
 import com.example.glowpoint.domain.repository.BookingRepository
+import com.example.glowpoint.domain.repository.NotificationRepository
 import com.example.glowpoint.domain.repository.SalonRepository
+import com.example.glowpoint.domain.repository.TokenRepository
 import com.example.glowpoint.ui.screens.bookingStatus.BookingStatusUIState
 import com.example.glowpoint.ui.screens.bookings.BookingsUIState
 import com.example.glowpoint.ui.screens.components.bookingsummary.BookingSummaryUIState
+import com.example.glowpoint.workerscheduler.SenderNotificationWorkerScheduler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
@@ -21,7 +28,10 @@ import kotlin.collections.map
 class BookingUseCase @Inject constructor(
     private val bookingRepository: BookingRepository,
     private val localDatabase: LocalDatabase,
-    private val shopRepository: SalonRepository
+    private val shopRepository: SalonRepository,
+    private val tokenRepository: TokenRepository,
+    private val notificationRepository: NotificationRepository,
+    private val senderNotificationWorkerScheduler: SenderNotificationWorkerScheduler
 ) {
 
     suspend fun bookService(bookingDetails: BookingDetails): BookingSummaryUIState {
@@ -34,17 +44,26 @@ class BookingUseCase @Inject constructor(
                         isSelected = true
                     )
                 }
-                when (val result = updateTimeSlot(
-                    salonId = bookingDetails.shopId,
+                val shopId = bookingDetails.shopId
+                when (val updateTimeSlotResult = updateTimeSlot(
+                    salonId = shopId,
                     date = System.currentTimeMillis(),
                     selectedTimeSlot = timeSlots
                 )) {
                     is FetchSalonsResult.UpdateTimeSlotSuccess -> {
+                        when(val notifyResult = notifyOwner(bookingId = result.bookingId, shopId = shopId)) {
+                            is NotificationResult.Success -> {
+                                Log.d("OrderUseCase", "Notification sent successfully")
+                            }
 
+                            is NotificationResult.Error -> {
+                                Log.e("OrderUseCase", "Error sending notification", notifyResult.e)
+                            }
+                        }
                     }
 
                     is FetchSalonsResult.Failure -> {
-                        BookingSummaryUIState.Failure(result.exception)
+                        BookingSummaryUIState.Failure(updateTimeSlotResult.exception)
                     }
 
                     else -> Unit
@@ -57,6 +76,30 @@ class BookingUseCase @Inject constructor(
             }
 
             else -> BookingSummaryUIState.Idle
+        }
+    }
+
+    private suspend fun notifyOwner(bookingId: String, shopId: String): NotificationResult {
+        return when (val result = tokenRepository.getShopFcmToken(shopId)) {
+            is TokenResult.Success -> {
+                val token = result.token
+                if (token.isBlank()) return NotificationResult.Error(Exception("Invalid token"))
+                notificationRepository.sendNotification(
+                    NotificationRequest(
+                        token = token,
+                        title = "New Order Received",
+                        body = "You have a new order! Order ID: $bookingId",
+                        bookingId = bookingId
+                    )
+                )
+
+                NotificationResult.Success(true)
+            }
+
+            is TokenResult.Failure -> {
+                senderNotificationWorkerScheduler.retryNotification(bookingId = bookingId, shopId = shopId)
+                return NotificationResult.Error(result.e)
+            }
         }
     }
 

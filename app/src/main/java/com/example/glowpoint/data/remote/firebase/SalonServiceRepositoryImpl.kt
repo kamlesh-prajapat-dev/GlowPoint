@@ -1,4 +1,4 @@
-package com.example.glowpoint.data.remote
+package com.example.glowpoint.data.remote.firebase
 
 import com.example.glowpoint.data.models.FetchedServiceItem
 import com.example.glowpoint.domain.model.SalonServicesResult

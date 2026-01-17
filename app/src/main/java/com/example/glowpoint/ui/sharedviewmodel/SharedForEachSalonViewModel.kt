@@ -48,5 +48,6 @@ class SharedForEachSalonViewModel : ViewModel() {
     fun reset() {
         _salon.value = null
         _listOfServiceId.value = null
+        _salonWithSelection.value = null
     }
 }
