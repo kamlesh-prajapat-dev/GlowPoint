@@ -16,7 +16,7 @@
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="Shops"
+            app:title="@string/shop_title"
             app:navigationIcon="@drawable/ic_back_arrow"
             android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
             app:titleTextColor="@color/white"

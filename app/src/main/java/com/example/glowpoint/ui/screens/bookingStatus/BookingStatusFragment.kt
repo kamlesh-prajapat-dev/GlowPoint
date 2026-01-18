@@ -23,6 +23,7 @@ import com.example.glowpoint.databinding.FragmentBookingStatusBinding
 import com.example.glowpoint.ui.adapter.SelectedServicesAdapter
 import com.example.glowpoint.ui.sharedviewmodel.SharedBBSViewModel
 import com.example.glowpoint.util.BookingStatus
+import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -33,6 +34,7 @@ import java.time.LocalTime
 import java.util.Calendar
 import java.util.Locale
 import java.util.concurrent.TimeUnit
+import kotlin.collections.forEach
 
 @AndroidEntryPoint
 class BookingStatusFragment : Fragment() {
@@ -86,6 +88,13 @@ class BookingStatusFragment : Fragment() {
 
                         val bookingStatus = it.bookingStatus
                         updateStatusTracker(bookingStatus, it.previousStatus)
+
+                        it.selectedTimeSlot.forEach { time ->
+                            val chip = Chip(requireContext())
+                            chip.text = time
+                            chip.isClickable = false
+                            binding.timeSlotChipGroup.addView(chip)
+                        }
 
                         val is40MinuteBefore = isSlotBefore40Minutes(it.selectedTimeSlot[0])
                         binding.screenBtn.isVisible = (bookingStatus == BookingStatus.PENDING || bookingStatus == BookingStatus.CONFIRMED) && is40MinuteBefore

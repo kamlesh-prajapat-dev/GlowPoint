@@ -36,7 +36,7 @@
             app:layout_constraintEnd_toStartOf="@+id/statusChip"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Glamour Salon" />
+            tools:text="" />
 
         <TextView
             android:id="@+id/serviceTextView"
@@ -50,13 +50,13 @@
             app:layout_constraintEnd_toEndOf="@+id/shopNameTextView"
             app:layout_constraintStart_toStartOf="@+id/shopNameTextView"
             app:layout_constraintTop_toBottomOf="@+id/shopNameTextView"
-            tools:text="Haircut + Beard Trim" />
+            tools:text="" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/statusChip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Confirmed"
+            android:text=""
             android:textColor="@color/white"
             app:chipBackgroundColor="#4CAF50"
             app:layout_constraintEnd_toEndOf="parent"
@@ -93,7 +93,7 @@
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reschedule"
+            android:text="@string/reschedule_btn_txt"
             app:layout_constraintBottom_toBottomOf="@+id/dateTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/dateTextView" />

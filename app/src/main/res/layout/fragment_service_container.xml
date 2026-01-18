@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:iconifiedByDefault="false"
-                app:queryHint="Search for services..." />
+                app:queryHint="@string/search_for_services" />
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center_vertical"
-            android:text="Services"
+            android:text="@string/services"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintBottom_toBottomOf="@+id/genderToggleGroup"
             app:layout_constraintStart_toStartOf="@id/searchCard"
@@ -64,14 +64,14 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="For Men" />
+                android:text="@string/male_txt" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/womenChip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="For Women" />
+                android:text="@string/female_txt" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -120,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="No Services found."
+            android:text="@string/empty_services_txt"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -176,7 +176,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="72dp"
-        android:text="Pick Shop"
+        android:text="@string/pick_shop_btn_txt"
         android:visibility="gone"
         app:icon="@drawable/ic_search" />
 

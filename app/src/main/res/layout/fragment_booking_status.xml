@@ -10,18 +10,18 @@
         android:id="@+id/topAppBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/ic_back_arrow"
-            app:title="Booking Status"
-            app:titleTextColor="@color/white"
-            app:navigationIconTint="@color/white"/>
+            app:navigationIconTint="@color/white"
+            app:title="@string/booking_status"
+            app:titleTextColor="@color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -29,18 +29,17 @@
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="10dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:elevation="10dp"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/topAppBarLayout"
-        >
+        app:layout_constraintTop_toBottomOf="@+id/topAppBarLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -63,7 +62,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Booking Status"
+                        android:text="@string/booking_status"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         android:textStyle="bold" />
 
@@ -78,7 +77,7 @@
                             android:id="@+id/pendingIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:contentDescription="TODO"
+                            android:contentDescription="@string/pending"
                             android:src="@drawable/ic_status_pending" />
 
                         <View
@@ -92,7 +91,7 @@
                             android:id="@+id/confirmedIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:contentDescription="TODO"
+                            android:contentDescription="@string/confirmed"
                             android:src="@drawable/ic_status_confirmed" />
 
                         <View
@@ -106,7 +105,7 @@
                             android:id="@+id/inProgressIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:contentDescription="TODO"
+                            android:contentDescription="@string/progress"
                             android:src="@drawable/ic_status_in_progress" />
 
                         <View
@@ -120,7 +119,7 @@
                             android:id="@+id/completedIcon"
                             android:layout_width="24dp"
                             android:layout_height="24dp"
-                            android:contentDescription="TODO"
+                            android:contentDescription="@string/complete"
                             android:src="@drawable/ic_status_complete" />
                     </LinearLayout>
 
@@ -135,7 +134,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Pending" />
+                            android:text="@string/pending" />
 
                         <TextView
                             android:id="@+id/confirmedTextView"
@@ -143,7 +142,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Confirmed" />
+                            android:text="@string/confirmed" />
 
                         <TextView
                             android:id="@+id/inProgressTextView"
@@ -151,7 +150,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="In Progress" />
+                            android:text="@string/progress" />
 
                         <TextView
                             android:id="@+id/completeTextView"
@@ -159,7 +158,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:text="Completed" />
+                            android:text="@string/complete" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -180,54 +179,51 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Shop Details"
+                        android:text="@string/shop_details"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         android:textStyle="bold" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="16dp"
-                        android:gravity="center_vertical">
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="16dp"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/shopNameTextView"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?attr/textAppearanceSubtitle1"
-                                    android:textStyle="bold"
-                                    tools:text="Glamour Salon"
-                                    android:layout_weight="1"/>
-
-                                <TextView
-                                    android:id="@+id/distanceTextView"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAlignment="textEnd"
-                                    android:text="5.5 km Away"
-                                    android:layout_weight="1"/>
-                            </LinearLayout>
+                            android:orientation="horizontal">
 
                             <TextView
-                                android:id="@+id/shopAddressTextView"
+                                android:id="@+id/shopNameTextView"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="4dp"
-                                android:textAppearance="?attr/textAppearanceBody2"
-                                tools:text="123, Glamour Street, Sparkle City" />
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLength="28"
+                                android:textAppearance="?attr/textAppearanceSubtitle1"
+                                android:textStyle="bold"
+                                tools:text="" />
+
+                            <TextView
+                                android:id="@+id/distanceTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:text=""
+                                android:textAlignment="textEnd" />
                         </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/shopAddressTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textAppearance="?attr/textAppearanceBody2"
+                            tools:text="" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -248,7 +244,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Selected Services"
+                        android:text="@string/selected_services"
                         android:textAppearance="?attr/textAppearanceHeadline6"
                         android:textStyle="bold" />
 
@@ -257,7 +253,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        tools:itemCount="2"
+                        tools:itemCount="1"
                         tools:listitem="@layout/item_selected_service" />
 
                     <View
@@ -276,7 +272,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Total Amount"
+                            android:text="@string/total_amount"
                             android:textAppearance="?attr/textAppearanceSubtitle1"
                             android:textStyle="bold" />
 
@@ -286,7 +282,7 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?attr/textAppearanceHeadline6"
                             android:textStyle="bold"
-                            tools:text="$40.00" />
+                            tools:text="" />
                     </LinearLayout>
 
                     <View
@@ -305,7 +301,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Payment Status"
+                            android:text="@string/payment_status"
                             android:textAppearance="?attr/textAppearanceSubtitle1"
                             android:textStyle="bold" />
 
@@ -315,9 +311,45 @@
                             android:layout_height="wrap_content"
                             android:textAppearance="?attr/textAppearanceBody1"
                             android:textStyle="bold"
-                            tools:text="Paid" />
+                            tools:text="" />
                     </LinearLayout>
 
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/timeSlotCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="4dp"
+                app:layout_constraintBottom_toTopOf="@+id/paymentMethodLayout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/selectedServicesCard">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/time_slot"
+                        android:textAppearance="?attr/textAppearanceSubtitle1"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/timeSlotChipGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp">
+
+                    </com.google.android.material.chip.ChipGroup>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -326,9 +358,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Cancel Booking"
                 android:backgroundTint="@color/green"
-                app:cornerRadius="12dp"/>
+                android:text="@string/cancel_booking_btn_txt"
+                app:cornerRadius="12dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

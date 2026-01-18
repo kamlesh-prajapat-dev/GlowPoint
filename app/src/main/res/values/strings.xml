@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Glow Point</string>
 
+    <!--  Splash Screen  -->
+    <string name="signature" translatable="false">Powered by Codedbg</string>
+
     <!-- Language Selection -->
     <string name="select_language">Select Language</string>
     <string name="english">English</string>
@@ -24,7 +27,6 @@
 
     <!-- Home Screen -->
     <string name="welcome_message">Welcome to GlowPoint!</string>
-    <string name="logout">Logout</string>
 
     <!-- No Internet Dialog -->
     <string name="no_internet_connection">No Internet Connection</string>
@@ -36,4 +38,64 @@
     <string name="addBtn_when_not_select">Add</string>
     <string name="addBtn_when_elect">Added</string>
     <string name="gender">Gender</string>
+
+    <!--  Account Screen  -->
+    <string name="profile_image_content_description">Profile Image</string>
+    <string name="edit_profile_btn_txt">Edit Profile</string>
+    <string name="booking_history_btn_txt">Booking History</string>
+    <string name="language_btn_txt">Language</string>
+    <string name="logout_btn_txt">Logout</string>
+
+    <!--  Booking Status Screen  -->
+    <string name="booking_status">Booking Status</string>
+    <string name="shop_details">Shop Details</string>
+    <string name="pending">Pending</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="progress">In Progress</string>
+    <string name="complete">Complete</string>
+    <string name="selected_services">Selected Services</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="payment_status">Payment Status</string>
+    <string name="cancel_booking_btn_txt">Cancel Booking</string>
+
+    <!--  Booking Summary Screen  -->
+    <string name="booking_summary_title">Booking Summary</string>
+    <string name="customer_details">Customer Details</string>
+    <string name="time_slot">Time Slot</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="pay_online_now">Pay online now</string>
+    <string name="pay_after_service">Pay after service</string>
+    <string name="confirm_booking_btn_txt">Confirm Booking</string>
+
+    <!--  Bookings Screen  -->
+    <string name="current">Current</string>
+    <string name="previous">Previous</string>
+    <string name="empty_booking_txt">Current Booking is Empty.</string>
+
+    <!--  Each Shop Screen  -->
+    <string name="ratting_start_content_description">Rating Star</string>
+    <string name="services">Services</string>
+    <string name="a_time_slots">Available Time Slots</string>
+    <string name="empty_salons">No salons found nearby.</string>
+    <string name="book_slot_btn_txt">Book Slot</string>
+
+    <!--  Location Screen  -->
+    <string name="location_search_txt">Search for your location...</string>
+    <string name="location_btn_txt">Use my current location</string>
+
+    <!--  Service Container Screen  -->
+    <string name="search_for_services">Search for services...</string>
+    <string name="male_txt">For Men</string>
+    <string name="female_txt">For Women</string>
+    <string name="empty_services_txt">No Services found.</string>
+    <string name="pick_shop_btn_txt">Pick Shop</string>
+
+    <!--  Shop Screen  -->
+    <string name="shop_title">Shops</string>
+
+    <!--  Shop Container Screen  -->
+    <string name="search_for_shops">Search for Shops...</string>
+
+    <!--  History Item Card  -->
+    <string name="reschedule_btn_txt">Reschedule</string>
 </resources>

@@ -1,5 +1,98 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ग्लोपॉइंट</string>
-    <string name="logout">लॉग आउट</string>
+    <string name="app_name">ग्लो पॉइंट</string>
+
+    <!-- Language Selection -->
+    <string name="select_language">भाषा चुनें</string>
+    <string name="english">अंग्रेज़ी</string>
+    <string name="hindi">हिंदी</string>
+
+    <!-- Login Screen -->
+    <string name="login_with_phone">फोन से लॉगिन करें</string>
+    <string name="phone_number">फोन नंबर</string>
+    <string name="send_code">कोड भेजें</string>
+
+    <!-- OTP Screen -->
+    <string name="enter_otp">कृपया आपके फोन पर भेजा गया 6 अंकों का कोड दर्ज करें</string>
+    <string name="verification_code">सत्यापन कोड</string>
+    <string name="verify_login">सत्यापित करें और लॉगिन करें</string>
+
+    <!-- Create Profile Screen -->
+    <string name="create_your_profile">अपना खाता बनाएं</string>
+    <string name="full_name">पूरा नाम</string>
+    <string name="email_address">ईमेल पता</string>
+    <string name="create_profile">प्रोफ़ाइल बनाएं</string>
+
+    <!-- Home Screen -->
+    <string name="welcome_message">ग्लो पॉइंट में आपका स्वागत है!</string>
+
+    <!-- No Internet Dialog -->
+    <string name="no_internet_connection">इंटरनेट कनेक्शन नहीं है</string>
+    <string name="check_internet_connection">कृपया अपना इंटरनेट कनेक्शन जांचें और पुनः प्रयास करें।</string>
+    <string name="ok">ठीक है</string>
+    <string name="resend_code_btn">कोड दोबारा भेजें</string>
+    <string name="recommendations">सिफारिशें</string>
+
+    <string name="addBtn_when_not_select">जोड़ें</string>
+    <string name="addBtn_when_elect">जोड़ा गया</string>
+    <string name="gender">लिंग</string>
+
+    <!-- Account Screen -->
+    <string name="profile_image_content_description">प्रोफ़ाइल चित्र</string>
+    <string name="edit_profile_btn_txt">प्रोफ़ाइल संपादित करें</string>
+    <string name="booking_history_btn_txt">बुकिंग इतिहास</string>
+    <string name="language_btn_txt">भाषा</string>
+    <string name="logout_btn_txt">लॉगआउट</string>
+
+    <!-- Booking Status Screen -->
+    <string name="booking_status">बुकिंग स्थिति</string>
+    <string name="shop_details">दुकान विवरण</string>
+    <string name="pending">लंबित</string>
+    <string name="confirmed">पुष्टि की गई</string>
+    <string name="progress">प्रक्रिया में</string>
+    <string name="complete">पूर्ण</string>
+    <string name="selected_services">चयनित सेवाएँ</string>
+    <string name="total_amount">कुल राशि</string>
+    <string name="payment_status">भुगतान स्थिति</string>
+    <string name="cancel_booking_btn_txt">बुकिंग रद्द करें</string>
+
+    <!-- Booking Summary Screen -->
+    <string name="booking_summary_title">बुकिंग सारांश</string>
+    <string name="customer_details">ग्राहक विवरण</string>
+    <string name="time_slot">समय स्लॉट</string>
+    <string name="payment_method">भुगतान का तरीका</string>
+    <string name="pay_online_now">अभी ऑनलाइन भुगतान करें</string>
+    <string name="pay_after_service">सेवा के बाद भुगतान करें</string>
+    <string name="confirm_booking_btn_txt">बुकिंग की पुष्टि करें</string>
+
+    <!-- Bookings Screen -->
+    <string name="current">वर्तमान</string>
+    <string name="previous">पिछली</string>
+    <string name="empty_booking_txt">कोई वर्तमान बुकिंग नहीं है।</string>
+
+    <!-- Each Shop Screen -->
+    <string name="ratting_start_content_description">रेटिंग स्टार</string>
+    <string name="services">सेवाएँ</string>
+    <string name="a_time_slots">उपलब्ध समय स्लॉट</string>
+    <string name="empty_salons">आस-पास कोई सैलून नहीं मिला।</string>
+    <string name="book_slot_btn_txt">स्लॉट बुक करें</string>
+
+    <!-- Location Screen -->
+    <string name="location_search_txt">अपना स्थान खोजें...</string>
+    <string name="location_btn_txt">मेरा वर्तमान स्थान उपयोग करें</string>
+
+    <!-- Service Container Screen -->
+    <string name="search_for_services">सेवाएँ खोजें...</string>
+    <string name="male_txt">पुरुषों के लिए</string>
+    <string name="female_txt">महिलाओं के लिए</string>
+    <string name="empty_services_txt">कोई सेवा नहीं मिली।</string>
+    <string name="pick_shop_btn_txt">दुकान चुनें</string>
+
+    <!-- Shop Screen -->
+    <string name="shop_title">दुकानें</string>
+
+    <!-- Shop Container Screen -->
+    <string name="search_for_shops">दुकानें खोजें...</string>
+
+    <!-- History Item Card -->
+    <string name="reschedule_btn_txt">पुनः निर्धारित करें</string>
 </resources>

@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Booking Summary"
+            android:text="@string/booking_summary_title"
             android:textAppearance="?attr/textAppearanceHeadline5"
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent"
@@ -58,7 +58,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawablePadding="10dp"
-                    android:text="Customer Details"
+                    android:text="@string/customer_details"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -74,7 +74,7 @@
                     android:layout_marginTop="12dp"
                     android:textColor="?android:attr/textColorPrimary"
                     android:textSize="14sp"
-                    tools:text="John Doe" />
+                    tools:text="" />
 
                 <!-- Customer Phone -->
                 <TextView
@@ -84,7 +84,7 @@
                     android:layout_marginTop="4dp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:textSize="14sp"
-                    tools:text="+91 98765 43210" />
+                    tools:text="" />
 
             </LinearLayout>
 
@@ -111,7 +111,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Shop Details"
+                    android:text="@string/shop_details"
                     android:textStyle="bold"
                     android:textSize="16sp"
                     android:textColor="?android:attr/textColorPrimary"
@@ -127,7 +127,7 @@
                     android:layout_marginTop="12dp"
                     android:textSize="14sp"
                     android:textColor="?android:attr/textColorPrimary"
-                    tools:text="Urban Salon" />
+                    tools:text="" />
 
                 <!-- Shop Address -->
                 <TextView
@@ -137,7 +137,7 @@
                     android:layout_marginTop="4dp"
                     android:textSize="13sp"
                     android:textColor="?android:attr/textColorSecondary"
-                    tools:text="MG Road, Gurgaon, Haryana" />
+                    tools:text="" />
 
             </LinearLayout>
 
@@ -175,14 +175,14 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_services"
-                        android:contentDescription="Selected Services"
+                        android:contentDescription="@string/selected_services"
                         app:tint="?attr/colorPrimary" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Selected Services"
+                        android:text="@string/selected_services"
                         android:textStyle="bold"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
                 </LinearLayout>
@@ -229,7 +229,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Total Amount"
+                        android:text="@string/total_amount"
                         android:textStyle="bold"
                         android:textAppearance="?attr/textAppearanceSubtitle1" />
 
@@ -239,7 +239,7 @@
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
                         android:textAppearance="?attr/textAppearanceHeadline6"
-                        tools:text="₹400" />
+                        tools:text="" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -273,7 +273,7 @@
                     <ImageView
                         android:layout_width="24dp"
                         android:layout_height="24dp"
-                        android:contentDescription="Time Slot"
+                        android:contentDescription="@string/time_slot"
                         android:src="@drawable/ic_time"
                         app:tint="?attr/colorPrimary" />
 
@@ -281,7 +281,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
-                        android:text="Time Slot"
+                        android:text="@string/time_slot"
                         android:textAppearance="?attr/textAppearanceSubtitle1"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -317,7 +317,7 @@
                 <ImageView
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:contentDescription="Payment Method"
+                    android:contentDescription="@string/payment_method"
                     android:src="@drawable/ic_payment"
                     app:tint="?attr/colorPrimary" />
 
@@ -325,7 +325,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="Payment Method"
+                    android:text="@string/payment_method"
                     android:textAppearance="?attr/textAppearanceSubtitle1"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -343,14 +343,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:checked="true"
-                    android:text="Pay after service" />
+                    android:text="@string/pay_after_service" />
 
                 <RadioButton
                     android:id="@+id/payOnline"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Pay online now" />
+                    android:text="@string/pay_online_now" />
             </RadioGroup>
         </LinearLayout>
 
@@ -360,7 +360,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:padding="16dp"
-            android:text="Confirm Booking"
+            android:text="@string/confirm_booking_btn_txt"
             android:textAppearance="?attr/textAppearanceButton"
             android:textColor="@color/white"
             android:letterSpacing="0"

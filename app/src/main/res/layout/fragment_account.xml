@@ -38,7 +38,7 @@
                 android:id="@+id/profileImageView"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:contentDescription="null"
+                android:contentDescription="@string/profile_image_content_description"
                 android:src="@drawable/ic_account_circle" />
 
             <LinearLayout
@@ -53,7 +53,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceHeadline6"
-                    tools:text="Kamlesh Prajapat"
+                    tools:text=""
                     android:maxLines="1"
                     android:ellipsize="end"/>
 
@@ -67,7 +67,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAppearance="?attr/textAppearanceBody2"
-                        tools:text="+919587216569"
+                        tools:text="+91"
                         android:maxLength="13"
                         android:layout_weight="1"/>
 
@@ -75,7 +75,7 @@
                         android:id="@+id/userGenderTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Male"
+                        android:text=""
                         android:textAppearance="?attr/textAppearanceBody2"
                         android:maxLength="6"
                         android:layout_weight="1"
@@ -106,7 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center_vertical"
-                    android:text="Edit Profile"
+                    android:text="@string/edit_profile_btn_txt"
                     android:textAppearance="?attr/textAppearanceBody1"
                     app:icon="@drawable/ic_edit"
                     app:iconPadding="20dp"/>
@@ -122,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center_vertical"
-                    android:text="Booking History"
+                    android:text="@string/booking_history_btn_txt"
                     android:textAppearance="?attr/textAppearanceBody1"
                     app:icon="@drawable/ic_booking_history"
                     app:iconPadding="20dp"/>
@@ -138,7 +138,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start|center_vertical"
-                    android:text="Language"
+                    android:text="@string/language_btn_txt"
                     android:textAppearance="?attr/textAppearanceBody1"
                     app:icon="@drawable/ic_language"
                     app:iconPadding="20dp"/>
@@ -153,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Log Out"
+            android:text="@string/logout_btn_txt"
             app:icon="@drawable/ic_logout"
             app:iconGravity="end"/>
 

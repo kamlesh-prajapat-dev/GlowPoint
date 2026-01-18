@@ -46,12 +46,12 @@
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Current" />
+                android:text="@string/current" />
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Previous" />
+                android:text="@string/previous" />
 
         </com.google.android.material.tabs.TabLayout>
 
@@ -73,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAlignment="center"
-            android:text="Current Order is Empty."
+            android:text="@string/empty_booking_txt"
             android:layout_marginTop="100dp"
             android:textStyle="bold"
             android:textSize="18sp"

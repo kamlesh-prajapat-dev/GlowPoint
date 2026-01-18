@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textAppearance="?attr/textAppearanceBody1"
-        tools:text="Haircut" />
+        tools:text="" />
 
     <TextView
         android:id="@+id/servicePrice"
@@ -23,6 +23,6 @@
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textStyle="bold"
-        tools:text="$25.00" />
+        tools:text="" />
 
 </LinearLayout>
