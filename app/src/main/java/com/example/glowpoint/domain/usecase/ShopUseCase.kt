@@ -1,19 +1,22 @@
 package com.example.glowpoint.domain.usecase
 
 import com.example.glowpoint.data.local.LocalDatabase
+import com.example.glowpoint.data.models.LocationSuggestion
 import com.example.glowpoint.data.models.ServiceItem
 import com.example.glowpoint.data.models.ShopDetails
-import com.example.glowpoint.domain.model.FetchSalonsResult
+import com.example.glowpoint.domain.mapper.FirestoreFailureMapper
+import com.example.glowpoint.domain.mapper.toGetReqDomainFailure
+import com.example.glowpoint.domain.model.result.FetchSalonsResult
 import com.example.glowpoint.domain.repository.SalonRepository
 import com.example.glowpoint.ui.screens.components.shops.ShopContainerUIState
 import com.example.glowpoint.ui.screens.eachshop.EachShopUIState
+import com.example.glowpoint.ui.screens.location.LocationUIState
 import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import kotlin.collections.filter
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.pow
@@ -25,7 +28,7 @@ class ShopUseCase @Inject constructor(
     private val localDatabase: LocalDatabase
 ) {
     private val earthRadius = 6371000.0 // Earth radius in meters
-    private val radiusInMeters: Double = 5000000.0
+    private val radiusInMeters: Double = 5000.0
 
     fun observeTimeSlot(salonId: String, date: Long, openTime: String, closeTime: String): Flow<EachShopUIState> {
         return shopRepository.observeTimeSlot(salonId, date, openTime, closeTime)
@@ -35,18 +38,64 @@ class ShopUseCase @Inject constructor(
                         EachShopUIState.Success(result.timeSlots)
                     }
 
-                    is FetchSalonsResult.Failure -> EachShopUIState.Failure(result.exception)
+                    is FetchSalonsResult.Failure -> EachShopUIState.Failure(result.exception.toGetReqDomainFailure(salonId))
 
                     else -> EachShopUIState.Idle
                 }
             }.catch {
-                emit(EachShopUIState.Failure(it as Exception))
+                emit(EachShopUIState.Failure(it.toGetReqDomainFailure(salonId)))
             }
     }
 
     fun loadMenServices() = localDatabase.getMenServices()
 
     fun loadWomenServices() = localDatabase.getWomenServices()
+
+    suspend fun getNearBySalon(
+        suggestion: LocationSuggestion
+    ): LocationUIState {
+        val centerLat = suggestion.latitude
+        val centerLng = suggestion.longitude
+        val bounds = GeoFireUtils.getGeoHashQueryBounds(
+            GeoLocation(centerLat, centerLng),
+            radiusInMeters
+        )
+
+        return when (val result = shopRepository.getNearBySalon(centerLat, centerLng, bounds)) {
+            is FetchSalonsResult.Success -> {
+                val nearBySalons = result.salons
+                    .mapNotNull { salon ->
+                        val location = salon.location ?: return@mapNotNull null
+
+                        val distance = haversineDistance(
+                            centerLat,
+                            centerLng,
+                            location.latitude,
+                            location.longitude
+                        )
+
+                        salon.copy(distance = distance)
+                    }
+                    .sortedBy { it.distance }
+                if (nearBySalons.isNotEmpty()) {
+                    localDatabase.setSalonModel(nearBySalons)
+                    localDatabase.lastCacheTimestampOfSalons = System.currentTimeMillis()
+                }
+
+                LocationUIState.GetNearBySalonSuccess(suggestion)
+            }
+            is FetchSalonsResult.Failure -> {
+                LocationUIState.Failure(FirestoreFailureMapper.map(result.exception, suggestion))
+            }
+
+            is FetchSalonsResult.NotServiceable -> {
+                localDatabase.setSalonModel(emptyList())
+                localDatabase.lastCacheTimestampOfSalons = System.currentTimeMillis()
+                LocationUIState.GetNearBySalonSuccess(suggestion)
+            }
+            else -> LocationUIState.Idle
+        }
+    }
 
     suspend fun getNearBySalon(
         centerLat: Double,
@@ -100,7 +149,7 @@ class ShopUseCase @Inject constructor(
             }
 
             is FetchSalonsResult.Failure -> {
-                ShopContainerUIState.Failure(result.exception)
+                ShopContainerUIState.Failure(FirestoreFailureMapper.map(result.exception, "Shops"))
             }
 
             is FetchSalonsResult.NotServiceable -> {

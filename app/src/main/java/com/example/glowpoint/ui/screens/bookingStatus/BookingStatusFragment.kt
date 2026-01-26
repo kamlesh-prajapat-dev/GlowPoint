@@ -1,13 +1,14 @@
 package com.example.glowpoint.ui.screens.bookingStatus
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.compose.ui.semantics.text
 import androidx.core.content.ContextCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -18,8 +19,9 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.glowpoint.R
-import com.example.glowpoint.data.models.TimeSlot
 import com.example.glowpoint.databinding.FragmentBookingStatusBinding
+import com.example.glowpoint.domain.model.failure.realtime.GetReqDomainFailure
+import com.example.glowpoint.domain.model.failure.realtime.WriteReqDomainFailure
 import com.example.glowpoint.ui.adapter.SelectedServicesAdapter
 import com.example.glowpoint.ui.sharedviewmodel.SharedBBSViewModel
 import com.example.glowpoint.util.BookingStatus
@@ -27,14 +29,9 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
-import java.util.Calendar
-import java.util.Locale
-import java.util.concurrent.TimeUnit
-import kotlin.collections.forEach
 
 @AndroidEntryPoint
 class BookingStatusFragment : Fragment() {
@@ -71,6 +68,7 @@ class BookingStatusFragment : Fragment() {
         observeViewModel()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -90,11 +88,21 @@ class BookingStatusFragment : Fragment() {
                         updateStatusTracker(bookingStatus, it.previousStatus)
 
                         it.selectedTimeSlot.forEach { time ->
-                            val chip = Chip(requireContext())
-                            chip.text = time
-                            chip.isClickable = false
-                            binding.timeSlotChipGroup.addView(chip)
+
+                            val alreadyAdded = binding.timeSlotChipGroup.children
+                                .filterIsInstance<Chip>()
+                                .any { chip -> chip.text.toString() == time }
+
+                            if (!alreadyAdded) {
+                                val chip = Chip(requireContext()).apply {
+                                    text = time
+                                    isClickable = false
+                                    isCheckable = false
+                                }
+                                binding.timeSlotChipGroup.addView(chip)
+                            }
                         }
+
 
                         val is40MinuteBefore = isSlotBefore40Minutes(it.selectedTimeSlot[0])
                         binding.screenBtn.isVisible = (bookingStatus == BookingStatus.PENDING || bookingStatus == BookingStatus.CONFIRMED) && is40MinuteBefore
@@ -108,8 +116,48 @@ class BookingStatusFragment : Fragment() {
                 viewModel.uiState.collect { 
                     when(it) {
                         is BookingStatusUIState.Idle -> { onSetLoading(false) }
-                        is BookingStatusUIState.Failure -> {
-                            Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_LONG).show()
+                        is BookingStatusUIState.GetFailure -> {
+                            when(val failure = it.failure) {
+                                is GetReqDomainFailure.InvalidData -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                GetReqDomainFailure.Network -> {
+                                    showNoInternetDialog()
+                                }
+                                is GetReqDomainFailure.NotFound -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is GetReqDomainFailure.PermissionDenied -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is GetReqDomainFailure.Unknown -> {
+                                    Toast.makeText(requireContext(), failure.cause.message, Toast.LENGTH_LONG).show()
+                                }
+                            }
+                            onSetLoading(false)
+                        }
+
+                        is BookingStatusUIState.WriteFailure -> {
+                            when(val failure = it.failure) {
+                                is WriteReqDomainFailure.Cancelled -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                WriteReqDomainFailure.NoInternet -> {
+                                    showNoInternetDialog()
+                                }
+                                is WriteReqDomainFailure.NotFound -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is WriteReqDomainFailure.PermissionDenied -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is WriteReqDomainFailure.Unknown -> {
+                                    Toast.makeText(requireContext(), failure.cause.message, Toast.LENGTH_LONG).show()
+                                }
+                                is WriteReqDomainFailure.ValidationError -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                            }
                             onSetLoading(false)
                         }
                         is BookingStatusUIState.Success -> {
@@ -185,8 +233,8 @@ class BookingStatusFragment : Fragment() {
 
 
         // Reset text and visibility
-        binding.pendingTextView.text = "Pending"
-        binding.confirmedTextView.text = "Confirmed"
+        binding.pendingTextView.setText(R.string.pending)
+        binding.confirmedTextView.setText(R.string.confirmed)
         binding.pendingTextView.setTextColor(inactiveColor)
         binding.confirmedTextView.setTextColor(inactiveColor)
         binding.inProgressTextView.isVisible = true

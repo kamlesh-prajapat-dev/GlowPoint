@@ -3,6 +3,7 @@ package com.example.glowpoint.di
 import com.example.glowpoint.data.local.LocalDatabase
 import com.example.glowpoint.domain.repository.AuthRepository
 import com.example.glowpoint.domain.repository.BookingRepository
+import com.example.glowpoint.domain.repository.LocationRepository
 import com.example.glowpoint.domain.repository.NotificationRepository
 import com.example.glowpoint.domain.repository.SalonRepository
 import com.example.glowpoint.domain.repository.SalonServiceRepository
@@ -83,12 +84,14 @@ class UseCaseModule {
     fun provideUserUseCase(
         userRepository: UserRepository,
         localDatabase: LocalDatabase,
-        tokenRepository: TokenRepository
+        tokenRepository: TokenRepository,
+        locationRepository: LocationRepository
     ): UserUseCase {
         return UserUseCase(
             userRepository = userRepository,
             tokenRepository = tokenRepository,
-            localDatabase = localDatabase
+            localDatabase = localDatabase,
+            locationRepository = locationRepository
         )
     }
 

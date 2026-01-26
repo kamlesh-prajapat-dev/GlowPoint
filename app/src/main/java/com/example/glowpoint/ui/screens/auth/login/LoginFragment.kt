@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -42,8 +43,15 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupUi()
         setupOnClickListeners()
         observeViewModel()
+    }
+
+    private fun setupUi() {
+        binding.phoneNumberEditText.addTextChangedListener {
+            binding.phoneNumberLayout.error = null
+        }
     }
 
     private fun setupOnClickListeners() {
@@ -89,11 +97,7 @@ class LoginFragment : Fragment() {
                     }
 
                     is LoginUIState.ValidationError -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Authentication Failed: ${it.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        binding.phoneNumberLayout.error = it.message
                         onSetLoading(false)
                     }
 

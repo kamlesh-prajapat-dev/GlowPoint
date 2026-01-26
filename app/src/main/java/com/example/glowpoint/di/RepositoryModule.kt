@@ -1,11 +1,11 @@
 package com.example.glowpoint.di
 
-import com.example.glowpoint.data.remote.firebase.AuthRepositoryImpl
-import com.example.glowpoint.data.remote.firebase.BookingRepositoryImpl
-import com.example.glowpoint.data.remote.firebase.ShopRepositoryImpl
-import com.example.glowpoint.data.remote.firebase.SalonServiceRepositoryImpl
-import com.example.glowpoint.data.remote.firebase.TokenRepositoryImpl
-import com.example.glowpoint.data.remote.firebase.UserRepositoryImpl
+import com.example.glowpoint.data.remote.repository.AuthRepositoryImpl
+import com.example.glowpoint.data.remote.repository.BookingRepositoryImpl
+import com.example.glowpoint.data.remote.repository.ShopRepositoryImpl
+import com.example.glowpoint.data.remote.repository.SalonServiceRepositoryImpl
+import com.example.glowpoint.data.remote.repository.TokenRepositoryImpl
+import com.example.glowpoint.data.remote.repository.UserRepositoryImpl
 import com.example.glowpoint.domain.repository.AuthRepository
 import com.example.glowpoint.domain.repository.BookingRepository
 import com.example.glowpoint.domain.repository.SalonRepository

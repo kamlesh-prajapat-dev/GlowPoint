@@ -74,7 +74,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.45" >
+            app:layout_constraintVertical_bias="0.45"
+            app:errorTextColor="@color/red">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneNumberEditText"
@@ -90,7 +91,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/send_code"
+            android:text="@string/send_code_btn"
             app:cornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="@+id/phoneNumberLayout"
             app:layout_constraintStart_toStartOf="@+id/phoneNumberLayout"
@@ -102,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="New User? Register here"
+            android:text="@string/register_txt_btn"
             app:layout_constraintEnd_toEndOf="@+id/sendCodeButton"
             app:layout_constraintStart_toStartOf="@+id/sendCodeButton"
             app:layout_constraintTop_toBottomOf="@+id/sendCodeButton" />

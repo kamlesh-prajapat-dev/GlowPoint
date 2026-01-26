@@ -9,7 +9,7 @@
     <!-- Login Screen -->
     <string name="login_with_phone">फोन से लॉगिन करें</string>
     <string name="phone_number">फोन नंबर</string>
-    <string name="send_code">कोड भेजें</string>
+    <string name="send_code_btn">कोड भेजें</string>
 
     <!-- OTP Screen -->
     <string name="enter_otp">कृपया आपके फोन पर भेजा गया 6 अंकों का कोड दर्ज करें</string>
@@ -77,11 +77,11 @@
     <string name="book_slot_btn_txt">स्लॉट बुक करें</string>
 
     <!-- Location Screen -->
-    <string name="location_search_txt">अपना स्थान खोजें...</string>
+    <string name="location_search_txt">अपना स्थान खोजें…</string>
     <string name="location_btn_txt">मेरा वर्तमान स्थान उपयोग करें</string>
 
     <!-- Service Container Screen -->
-    <string name="search_for_services">सेवाएँ खोजें...</string>
+    <string name="search_for_services">सेवाएँ खोजें…</string>
     <string name="male_txt">पुरुषों के लिए</string>
     <string name="female_txt">महिलाओं के लिए</string>
     <string name="empty_services_txt">कोई सेवा नहीं मिली।</string>
@@ -91,7 +91,7 @@
     <string name="shop_title">दुकानें</string>
 
     <!-- Shop Container Screen -->
-    <string name="search_for_shops">दुकानें खोजें...</string>
+    <string name="search_for_shops">दुकानें खोजें…</string>
 
     <!-- History Item Card -->
     <string name="reschedule_btn_txt">पुनः निर्धारित करें</string>

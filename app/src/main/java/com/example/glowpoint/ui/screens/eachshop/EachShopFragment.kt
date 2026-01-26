@@ -19,6 +19,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.glowpoint.R
 import com.example.glowpoint.data.models.ShopDetails
 import com.example.glowpoint.databinding.FragmentEachShopBinding
+import com.example.glowpoint.domain.model.failure.realtime.GetReqDomainFailure
 import com.example.glowpoint.ui.adapter.RecyclerViewItemAdapter
 import com.example.glowpoint.ui.adapter.RecyclerViewTimeSlotAdapter
 import com.example.glowpoint.ui.screens.components.ChildNavigationListener
@@ -95,7 +96,23 @@ class EachShopFragment : Fragment() {
                         }
 
                         is EachShopUIState.Failure -> {
-                            Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_LONG).show()
+                            when(val failure = it.failure) {
+                                is GetReqDomainFailure.InvalidData -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                GetReqDomainFailure.Network -> {
+                                    showNoInternetDialog()
+                                }
+                                is GetReqDomainFailure.NotFound -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is GetReqDomainFailure.PermissionDenied -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is GetReqDomainFailure.Unknown -> {
+                                    Toast.makeText(requireContext(), failure.cause.message, Toast.LENGTH_LONG).show()
+                                }
+                            }
                             onSetLoading(false)
                         }
 

@@ -1,4 +1,4 @@
-package com.example.glowpoint.domain.model
+package com.example.glowpoint.domain.model.result
 
 sealed interface NotificationResult {
     data class Success(val isSuccess: Boolean = false): NotificationResult

@@ -8,4 +8,6 @@ plugins {
 
     alias(libs.plugins.hiltAndroid) apply false
     alias(libs.plugins.kotlinAndroidKsp) apply false
+
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.0"
 }

@@ -80,6 +80,11 @@ class AccountFragment : Fragment() {
             // Navigate to the booking history screen
         }
 
+        binding.sampleDataButton.setOnClickListener {
+            val action = AccountFragmentDirections.actionAccountFragmentToSampleDataFragment()
+            findNavController().navigate(action)
+        }
+
         binding.languageButton.setOnClickListener {
             // Handle language selection
             LanguageSelectionDialogFragment().show(

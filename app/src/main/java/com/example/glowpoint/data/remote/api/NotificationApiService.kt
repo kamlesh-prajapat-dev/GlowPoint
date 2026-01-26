@@ -1,6 +1,6 @@
 package com.example.glowpoint.data.remote.api
 
-import com.example.glowpoint.data.models.NotificationRequest
+import com.example.glowpoint.data.models.api.NotificationRequest
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType

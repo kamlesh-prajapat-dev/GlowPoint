@@ -1,7 +1,8 @@
 package com.example.glowpoint.domain.usecase
 
 import com.example.glowpoint.data.local.LocalDatabase
-import com.example.glowpoint.domain.model.SalonServicesResult
+import com.example.glowpoint.domain.mapper.FirestoreFailureMapper
+import com.example.glowpoint.domain.model.result.SalonServicesResult
 import com.example.glowpoint.domain.repository.SalonServiceRepository
 import com.example.glowpoint.ui.screens.components.services.ServiceContainerUIState
 import com.example.glowpoint.util.SalonServicesRepositoryConstant
@@ -12,34 +13,44 @@ class SalonServiceUseCase @Inject constructor(
     private val localDatabase: LocalDatabase
 ) {
     suspend fun getMenSalonServices(): ServiceContainerUIState {
-        return when(val result = salonServiceRepository.getServices(SalonServicesRepositoryConstant.MEN_SERVICES_COLLECTION)) {
+        return when (val result =
+            salonServiceRepository.getServices(SalonServicesRepositoryConstant.MEN_SERVICES_COLLECTION)) {
             is SalonServicesResult.Success -> {
                 val services = result.services
                 if (services.isNotEmpty()) {
-                    localDatabase.setMenServices(result.services)
+                    localDatabase.setMenServices(services)
+                    localDatabase.lastCacheTimestampOfSalonMenServices = System.currentTimeMillis()
                 }
-                ServiceContainerUIState.Success(result.services, true)
+                ServiceContainerUIState.MenSuccess(
+                    services = services
+                )
             }
 
             is SalonServicesResult.Failure -> {
-                ServiceContainerUIState.Failure(result.exception)
+                ServiceContainerUIState.Failure(FirestoreFailureMapper.map(result.exception,
+                    SalonServicesRepositoryConstant.MEN_SERVICES_COLLECTION))
             }
         }
     }
 
     suspend fun getWomenSalonServices(): ServiceContainerUIState {
-        return when(val result = salonServiceRepository.getServices(SalonServicesRepositoryConstant.WOMEN_SERVICES_COLLECTION)) {
+        return when (val result =
+            salonServiceRepository.getServices(SalonServicesRepositoryConstant.WOMEN_SERVICES_COLLECTION)) {
             is SalonServicesResult.Success -> {
                 val services = result.services
                 if (services.isNotEmpty()) {
-                    localDatabase.setWomenServices(result.services)
-                    localDatabase.lastCacheTimestampOfSalonServices = System.currentTimeMillis()
+                    localDatabase.setWomenServices(services)
+                    localDatabase.lastCacheTimestampOfSalonWomenServices =
+                        System.currentTimeMillis()
                 }
-                ServiceContainerUIState.Success(result.services, false)
+                ServiceContainerUIState.WomenSuccess(
+                    services = services
+                )
             }
 
             is SalonServicesResult.Failure -> {
-                ServiceContainerUIState.Failure(result.exception)
+                ServiceContainerUIState.Failure(FirestoreFailureMapper.map(result.exception,
+                    SalonServicesRepositoryConstant.WOMEN_SERVICES_COLLECTION))
             }
         }
     }
@@ -48,7 +59,9 @@ class SalonServiceUseCase @Inject constructor(
 
     fun isNewUser() = localDatabase.isNewUser()
 
-    fun getLastTemeCache() = localDatabase.lastCacheTimestampOfSalonServices
+    fun getLastTemeCacheOfWomenServices() = localDatabase.lastCacheTimestampOfSalonWomenServices
+    fun getLastTemeCacheOfMenServices() = localDatabase.lastCacheTimestampOfSalonMenServices
+
 
     fun getMenServicesFromCache() = localDatabase.getMenServices()
 

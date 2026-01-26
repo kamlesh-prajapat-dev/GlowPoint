@@ -1,4 +1,4 @@
-package com.example.glowpoint.domain.model
+package com.example.glowpoint.domain.model.result
 
 sealed interface TokenResult {
     data class Success(val token: String): TokenResult

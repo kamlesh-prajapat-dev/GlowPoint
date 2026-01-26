@@ -18,10 +18,11 @@ import com.example.glowpoint.R
 import com.example.glowpoint.databinding.FragmentServiceContainerBinding
 import com.example.glowpoint.data.models.ServiceItem
 import com.example.glowpoint.data.models.User
+import com.example.glowpoint.data.remote.exception.EmptyDataException
+import com.example.glowpoint.domain.model.failure.firestore.GetReqDomainFailure
 import com.example.glowpoint.ui.adapter.RecyclerViewItemAdapter
 import com.example.glowpoint.ui.screens.home.HomeFragmentDirections
 import com.example.glowpoint.ui.sharedviewmodel.SharedForSearchShopsViewModel
-import com.example.glowpoint.util.EmptyListException
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -63,7 +64,8 @@ class ServiceContainerFragment : Fragment() {
 
     private fun setupClickListeners() {
 
-        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+        binding.searchView.setOnQueryTextListener(object :
+            androidx.appcompat.widget.SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
@@ -99,7 +101,12 @@ class ServiceContainerFragment : Fragment() {
             binding.menChip.id -> {
                 val list = viewModel.menServices.value
                 if (list.isNotEmpty()) {
-                    val filteredList = list.filter { it.name.contains(newText ?: "", ignoreCase = true) || it.description.contains(newText ?: "", ignoreCase = true) }
+                    val filteredList = list.filter {
+                        it.name.contains(
+                            newText ?: "",
+                            ignoreCase = true
+                        ) || it.description.contains(newText ?: "", ignoreCase = true)
+                    }
                     updateItemAdapterList(filteredList)
                 }
             }
@@ -107,7 +114,12 @@ class ServiceContainerFragment : Fragment() {
             binding.womenChip.id -> {
                 val list = viewModel.womenServices.value
                 if (list.isNotEmpty()) {
-                    val filteredList = list.filter { it.name.contains(newText ?: "", ignoreCase = true) || it.description.contains(newText ?: "", ignoreCase = true) }
+                    val filteredList = list.filter {
+                        it.name.contains(
+                            newText ?: "",
+                            ignoreCase = true
+                        ) || it.description.contains(newText ?: "", ignoreCase = true)
+                    }
                     updateItemAdapterList(filteredList)
                 }
             }
@@ -130,7 +142,7 @@ class ServiceContainerFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.user.collect { user ->
-                   genderToggle(user)
+                    genderToggle(user)
                 }
             }
         }
@@ -148,17 +160,33 @@ class ServiceContainerFragment : Fragment() {
                         }
 
                         is ServiceContainerUIState.Failure -> {
-                            when (val exception = it.exception) {
-                                is EmptyListException -> {
-                                    binding.emptyStateGroup.isVisible = true
-                                    binding.emptyStateText.text = exception.message
+                            when (val failure = it.failure) {
+                                GetReqDomainFailure.Cancelled -> Unit
+                                GetReqDomainFailure.DataNotFound -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Data not found",
+                                        Toast.LENGTH_SHORT).show()
                                 }
-
-                                else -> Toast.makeText(
-                                    requireContext(),
-                                    exception.message,
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                GetReqDomainFailure.InvalidRequest -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Invalid Request",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                                GetReqDomainFailure.NoInternet -> showNoInternetDialog()
+                                is GetReqDomainFailure.PermissionDenied -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        failure.message,
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                                is GetReqDomainFailure.Unknown -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        failure.cause.message,
+                                        Toast.LENGTH_SHORT).show()
+                                }
                             }
                             onSetLoading(false)
                         }
@@ -168,29 +196,23 @@ class ServiceContainerFragment : Fragment() {
                             onSetLoading(false)
                         }
 
-                        is ServiceContainerUIState.Success -> {
-                            val genderCategory = it.genderCategory
+                        is ServiceContainerUIState.MenSuccess -> {
                             val services = it.services
-                            if (services.isNotEmpty()) {
-                                if (genderCategory) {
-                                    if (viewModel.menServices.value.isEmpty()) {
-                                        if (viewModel.womenServices.value.isEmpty()) {
-                                            viewModel.loadServices(false)
-                                        }
-                                        viewModel.updateLiveData(it.services, true)
-                                    }
-                                } else {
-                                    if (viewModel.womenServices.value.isEmpty()) {
-                                        if (viewModel.menServices.value.isEmpty()) {
-                                            viewModel.loadServices(true)
-                                        }
-                                        viewModel.updateLiveData(it.services, false)
-                                    }
-                                }
-                            } else {
-                                binding.categoryRecycler.isVisible = false
-                                binding.emptyStateGroup.isVisible = true
+                            if (!viewModel.isFirstRequestedCompletedForWomen.value) {
+                                viewModel.loadServices(false)
                             }
+                            viewModel.updateLiveData(services, true)
+
+                            onSetLoading(false)
+                        }
+
+                        is ServiceContainerUIState.WomenSuccess -> {
+                            val services = it.services
+                            if (!viewModel.isFirstRequestedCompleteForMen.value) {
+                                viewModel.loadServices(true)
+                            }
+                            viewModel.updateLiveData(services, false)
+
                             onSetLoading(false)
                         }
                     }
@@ -199,11 +221,23 @@ class ServiceContainerFragment : Fragment() {
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.menServices.collect { if (it.isNotEmpty() && binding.genderToggleGroup.checkedChipId == binding.menChip.id) updateServiceList(it) }
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.menServices.collect {
+                    if (binding.genderToggleGroup.checkedChipId == binding.menChip.id) updateServiceList(
+                        it
+                    )
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.womenServices.collect { if (it.isNotEmpty() && binding.genderToggleGroup.checkedChipId == binding.womenChip.id) updateServiceList(it) }
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.womenServices.collect {
+                    if (binding.genderToggleGroup.checkedChipId == binding.womenChip.id) updateServiceList(
+                        it
+                    )
+                }
+            }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
@@ -224,19 +258,19 @@ class ServiceContainerFragment : Fragment() {
         when (binding.genderToggleGroup.checkedChipId) {
             binding.menChip.id -> {
                 val list = viewModel.menServices.value
-                if (list.isNotEmpty()) {
-                    updateItemAdapterList(list)
-                } else {
+                if (!viewModel.isFirstRequestedCompleteForMen.value) {
                     viewModel.loadServices(true)
+                } else {
+                    updateItemAdapterList(list)
                 }
             }
 
             binding.womenChip.id -> {
                 val list = viewModel.womenServices.value
-                if (list.isNotEmpty()) {
-                    updateItemAdapterList(list)
-                } else {
+                if (!viewModel.isFirstRequestedCompletedForWomen.value) {
                     viewModel.loadServices(false)
+                } else {
+                    updateItemAdapterList(list)
                 }
             }
         }
@@ -246,6 +280,9 @@ class ServiceContainerFragment : Fragment() {
         val showRecycler = list.isNotEmpty()
         binding.categoryRecycler.isVisible = showRecycler
         binding.emptyStateGroup.isVisible = !showRecycler
+
+        if (itemAdapter.currentList == list) return
+
         itemAdapter.submitList(list)
     }
 

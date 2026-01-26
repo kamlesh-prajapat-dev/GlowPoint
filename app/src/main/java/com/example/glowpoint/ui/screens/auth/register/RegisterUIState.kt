@@ -7,7 +7,7 @@ sealed interface RegisterUIState {
     object Idle: RegisterUIState
     object Loading: RegisterUIState
     object NotInternet: RegisterUIState
-    data class ValidationError(val message: String): RegisterUIState
+    data class ValidationError(val msgForName: String? = null, val msgForNumber: String? = null, val msgForGender: String? = null): RegisterUIState
     object Success: RegisterUIState
     data class Failure(val exception: Exception): RegisterUIState
     data class Verification(val verificationId: String, val token: PhoneAuthProvider.ForceResendingToken, val user: User): RegisterUIState

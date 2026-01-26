@@ -1,8 +1,7 @@
 package com.example.glowpoint.domain.repository
 
 import com.example.glowpoint.data.models.User
-import com.example.glowpoint.domain.model.UserResult
-import com.example.glowpoint.domain.model.AuthResult
+import com.example.glowpoint.domain.model.result.UserResult
 
 interface UserRepository {
     suspend fun createUser(user: User): UserResult

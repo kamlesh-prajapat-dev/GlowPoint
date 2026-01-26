@@ -3,7 +3,7 @@ package com.example.glowpoint.domain.usecase
 import android.app.Activity
 import com.example.glowpoint.data.local.LocalDatabase
 import com.example.glowpoint.domain.repository.AuthRepository
-import com.example.glowpoint.domain.model.AuthResult
+import com.example.glowpoint.domain.model.result.AuthResult
 import com.example.glowpoint.ui.screens.auth.login.LoginUIState
 import com.example.glowpoint.ui.screens.auth.otp.OtpUISate
 import com.example.glowpoint.ui.screens.auth.register.RegisterUIState

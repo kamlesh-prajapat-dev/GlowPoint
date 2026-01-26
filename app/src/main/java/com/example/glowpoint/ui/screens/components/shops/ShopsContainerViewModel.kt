@@ -6,7 +6,6 @@ import com.example.glowpoint.data.local.LocalDatabase
 import com.example.glowpoint.data.models.ServiceItem
 import com.example.glowpoint.data.models.ShopDetails
 import com.example.glowpoint.domain.usecase.ShopUseCase
-import com.example.glowpoint.util.EmptyListException
 import com.example.glowpoint.util.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +47,7 @@ class ShopsContainerViewModel @Inject constructor(
 
             if (shouldFetchFromFirebase) {
                 if (networkUtils.isInternetAvailable()) {
-                    val fetchResult = fetchFromFirebaseAndCache(latitude, longitude)
+                    val fetchResult = fetchFromFirebaseAndCache(latitude, longitude, selectedServices)
                     when (fetchResult) {
                         is ShopContainerUIState.Failure -> loadFromCacheOrShowError(selectedServices)
                         else -> Unit
@@ -99,11 +98,11 @@ class ShopsContainerViewModel @Inject constructor(
         if (cachedSalons.isNotEmpty()) {
             _uiState.value = ShopContainerUIState.Success(cachedSalons)
         } else {
-           _uiState.value = ShopContainerUIState.Failure(EmptyListException("Salons could not be loaded at this time."))
+           _uiState.value = ShopContainerUIState.NotServiceable
         }
     }
 
-    private suspend fun fetchFromFirebaseAndCache(latitude: Double, longitude: Double): ShopContainerUIState {
-        return shopUseCase.getNearBySalon(latitude, longitude)
+    private suspend fun fetchFromFirebaseAndCache(latitude: Double, longitude: Double, selectedServices: List<ServiceItem>? = null): ShopContainerUIState {
+        return shopUseCase.getNearBySalon(latitude, longitude, selectedServices)
     }
 }

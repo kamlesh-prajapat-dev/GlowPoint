@@ -1,4 +1,4 @@
-package com.example.glowpoint.data.models
+package com.example.glowpoint.data.models.api
 
 import kotlinx.serialization.Serializable
 

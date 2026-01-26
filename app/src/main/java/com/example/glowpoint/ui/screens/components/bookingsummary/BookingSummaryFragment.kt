@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.glowpoint.R
 import com.example.glowpoint.databinding.FragmentBookingSummaryBinding
+import com.example.glowpoint.domain.model.failure.realtime.WriteReqDomainFailure
 import com.example.glowpoint.ui.adapter.SelectedServicesAdapter
 import com.example.glowpoint.ui.screens.components.ChildNavigationListener
 import com.example.glowpoint.ui.sharedviewmodel.SharedESToBSViewModel
@@ -77,7 +78,26 @@ class BookingSummaryFragment : BottomSheetDialogFragment() {
                             onSetLoading(false)
                         }
                         is BookingSummaryUIState.Failure -> {
-                            Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_LONG).show()
+                            when(val failure = it.failure) {
+                                is WriteReqDomainFailure.Cancelled -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                WriteReqDomainFailure.NoInternet -> {
+                                    showNoInternetDialog()
+                                }
+                                is WriteReqDomainFailure.NotFound -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is WriteReqDomainFailure.PermissionDenied -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is WriteReqDomainFailure.Unknown -> {
+                                    Toast.makeText(requireContext(), failure.cause.message, Toast.LENGTH_LONG).show()
+                                }
+                                is WriteReqDomainFailure.ValidationError -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                            }
                             onSetLoading(false)
                         }
                         is BookingSummaryUIState.Success -> {

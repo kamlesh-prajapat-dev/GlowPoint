@@ -1,4 +1,4 @@
-package com.example.glowpoint.domain.model
+package com.example.glowpoint.domain.model.result
 
 import com.example.glowpoint.data.models.FetchedBooking
 

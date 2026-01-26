@@ -3,6 +3,7 @@ package com.example.glowpoint.di
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.glowpoint.data.local.LocalDatabase
+import com.example.glowpoint.domain.repository.LocationRepository
 import com.example.glowpoint.domain.repository.NotificationRepository
 import com.example.glowpoint.util.LocaleHelper
 import com.example.glowpoint.util.NetworkUtils
@@ -46,5 +47,11 @@ object AppModule {
     @Singleton
     fun provideNotificationRepository(): NotificationRepository {
         return NotificationRepository()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationRepository(): LocationRepository {
+        return LocationRepository()
     }
 }

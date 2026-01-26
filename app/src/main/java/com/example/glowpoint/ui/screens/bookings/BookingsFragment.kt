@@ -17,6 +17,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.glowpoint.R
 import com.example.glowpoint.databinding.FragmentBookingsBinding
+import com.example.glowpoint.domain.model.failure.realtime.GetReqDomainFailure
 import com.example.glowpoint.ui.adapter.BookingHistoryAdapter
 import com.example.glowpoint.ui.sharedviewmodel.SharedBBSViewModel
 import com.google.android.material.tabs.TabLayout
@@ -69,7 +70,6 @@ class BookingsFragment : Fragment() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-                // same tab dobara click hua
                 applyFilter(tab.position)
             }
         })
@@ -118,8 +118,6 @@ class BookingsFragment : Fragment() {
         binding.emptyStateText.isVisible = true
     }
 
-
-
     private fun isSameDay(time: Long): Boolean {
         val bookingDate = Instant.ofEpochMilli(time)
             .atZone(ZoneId.systemDefault())
@@ -128,7 +126,6 @@ class BookingsFragment : Fragment() {
         val today = LocalDate.now()
         return bookingDate == today
     }
-
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -139,7 +136,23 @@ class BookingsFragment : Fragment() {
                             onSetLoading(false)
                         }
                         is BookingsUIState.Failure -> {
-                            Toast.makeText(requireContext(), it.exception.message, Toast.LENGTH_LONG).show()
+                            when(val failure = it.failure) {
+                                is GetReqDomainFailure.InvalidData -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                GetReqDomainFailure.Network -> {
+                                    showNoInternetDialog()
+                                }
+                                is GetReqDomainFailure.NotFound -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is GetReqDomainFailure.PermissionDenied -> {
+                                    Toast.makeText(requireContext(), failure.message, Toast.LENGTH_LONG).show()
+                                }
+                                is GetReqDomainFailure.Unknown -> {
+                                    Toast.makeText(requireContext(), failure.cause.message, Toast.LENGTH_LONG).show()
+                                }
+                            }
                             onSetLoading(false)
                         }
                         is BookingsUIState.Loading -> {

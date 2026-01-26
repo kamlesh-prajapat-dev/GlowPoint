@@ -12,7 +12,11 @@
     <!-- Login Screen -->
     <string name="login_with_phone">Login with Phone</string>
     <string name="phone_number">Phone Number</string>
-    <string name="send_code">Send Code</string>
+    <string name="send_code_btn">Send Code</string>
+    <string name="register_txt_btn">New User? Register here</string>
+
+    <!--  Register Screen  -->
+    <string name="register_btn">Register</string>
 
     <!-- OTP Screen -->
     <string name="enter_otp">Please enter the 6 digit code from the SMS sent to your phone</string>
@@ -80,11 +84,11 @@
     <string name="book_slot_btn_txt">Book Slot</string>
 
     <!--  Location Screen  -->
-    <string name="location_search_txt">Search for your location...</string>
+    <string name="location_search_txt">Search for your location…</string>
     <string name="location_btn_txt">Use my current location</string>
 
     <!--  Service Container Screen  -->
-    <string name="search_for_services">Search for services...</string>
+    <string name="search_for_services">Search for services…</string>
     <string name="male_txt">For Men</string>
     <string name="female_txt">For Women</string>
     <string name="empty_services_txt">No Services found.</string>
@@ -94,7 +98,7 @@
     <string name="shop_title">Shops</string>
 
     <!--  Shop Container Screen  -->
-    <string name="search_for_shops">Search for Shops...</string>
+    <string name="search_for_shops">Search for Shops…</string>
 
     <!--  History Item Card  -->
     <string name="reschedule_btn_txt">Reschedule</string>

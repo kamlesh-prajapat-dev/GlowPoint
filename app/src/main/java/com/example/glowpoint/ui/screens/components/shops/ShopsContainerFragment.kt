@@ -1,26 +1,21 @@
 package com.example.glowpoint.ui.screens.components.shops
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
-import com.example.glowpoint.databinding.FragmentHomeBinding
 import com.example.glowpoint.databinding.FragmentShopsContainerBinding
+import com.example.glowpoint.domain.model.failure.firestore.GetReqDomainFailure
 import com.example.glowpoint.ui.adapter.RecyclerViewShopAdapter
 import com.example.glowpoint.ui.screens.components.ChildNavigationListener
-import com.example.glowpoint.ui.screens.home.HomeFragment
-import com.example.glowpoint.ui.screens.home.HomeFragmentDirections
-import com.example.glowpoint.ui.screens.shop.ShopsFragment
-import com.example.glowpoint.ui.screens.shop.ShopsFragmentDirections
 import com.example.glowpoint.ui.sharedviewmodel.ParentChildForShopsContainerViewModel
 import com.example.glowpoint.ui.sharedviewmodel.SharedForEachSalonViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -122,11 +117,34 @@ class ShopsContainerFragment : Fragment() {
                         }
 
                         is ShopContainerUIState.Failure -> {
-                            Toast.makeText(
-                                requireContext(),
-                                it.exception.message,
-                                Toast.LENGTH_LONG
-                            ).show()
+                            when (val failure = it.failure) {
+                                GetReqDomainFailure.Cancelled -> Unit
+                                GetReqDomainFailure.DataNotFound -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Data not found",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                                GetReqDomainFailure.InvalidRequest -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Invalid Request",
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                                GetReqDomainFailure.NoInternet -> Unit // No Internet Dialog
+                                is GetReqDomainFailure.PermissionDenied -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        failure.message,
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                                is GetReqDomainFailure.Unknown -> {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        failure.cause.message,
+                                        Toast.LENGTH_SHORT).show()
+                                }
+                            }
                             onSetLoading(false)
                         }
 

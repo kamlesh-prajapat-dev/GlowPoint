@@ -106,7 +106,7 @@
         <action
             android:id="@+id/action_locationFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/locationFragment"
+            app:popUpTo="@id/nav_graph"
             app:popUpToInclusive="true"/>
     </fragment>
 
@@ -219,6 +219,18 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_accountFragment_to_sampleDataFragment"
+            app:destination="@id/sampleDataFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/sampleDataFragment"
+        android:name="com.example.glowpoint.ui.screens.sample.SampleDataFragment"
+        android:label="SampleDataFragment"
+        tools:layout="@layout/fragment_sample_data">
+
     </fragment>
 
 </navigation>

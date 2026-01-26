@@ -71,10 +71,10 @@
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusBottomEnd="12dp"
-            android:hint="@string/full_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleTextView">
+            app:layout_constraintTop_toBottomOf="@+id/titleTextView"
+            app:errorTextColor="@color/red">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/nameEditText"
@@ -82,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:maxLines="1"
                 android:inputType="text"
+                android:hint="@string/full_name"
                 android:text=""/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -91,20 +92,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="@string/gender"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusBottomEnd="12dp"
             app:layout_constraintEnd_toEndOf="@+id/nameLayout"
             app:layout_constraintStart_toStartOf="@+id/nameLayout"
-            app:layout_constraintTop_toBottomOf="@+id/nameLayout">
+            app:layout_constraintTop_toBottomOf="@+id/nameLayout"
+            app:errorTextColor="@color/red">
 
             <AutoCompleteTextView
                 android:id="@+id/genderAutoCompleteTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="none"/>
+                android:inputType="none"
+                android:hint="@string/gender" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -113,20 +115,21 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:hint="Phone Number"
             app:boxCornerRadiusTopStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusBottomEnd="12dp"
             app:layout_constraintEnd_toEndOf="@+id/genderLayout"
             app:layout_constraintStart_toStartOf="@+id/genderLayout"
-            app:layout_constraintTop_toBottomOf="@+id/genderLayout">
+            app:layout_constraintTop_toBottomOf="@+id/genderLayout"
+            app:errorTextColor="@color/red">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/phoneNumberEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
+                android:hint="@string/phone_number"
                 android:inputType="phone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -135,7 +138,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:text="Register"
+            android:text="@string/register_btn"
             app:cornerRadius="12dp"
             app:layout_constraintEnd_toEndOf="@+id/phoneNumberLayout"
             app:layout_constraintStart_toStartOf="@+id/phoneNumberLayout"

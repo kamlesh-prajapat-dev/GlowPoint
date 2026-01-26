@@ -2,12 +2,11 @@ package com.example.glowpoint.worker
 
 import android.content.Context
 import android.util.Log
-import androidx.compose.ui.geometry.Rect
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.example.glowpoint.data.models.NotificationRequest
-import com.example.glowpoint.domain.model.TokenResult
+import com.example.glowpoint.data.models.api.NotificationRequest
+import com.example.glowpoint.domain.model.result.TokenResult
 import com.example.glowpoint.domain.repository.NotificationRepository
 import com.example.glowpoint.domain.repository.TokenRepository
 import dagger.assisted.Assisted

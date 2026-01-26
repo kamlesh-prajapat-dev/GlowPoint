@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -42,9 +43,24 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupUi()
         setupAdapter()
         setupOnClickListener()
         observeViewModel()
+    }
+
+    private fun setupUi() {
+        binding.phoneNumberEditText.addTextChangedListener {
+            binding.phoneNumberLayout.error = null
+        }
+
+        binding.genderAutoCompleteTextView.addTextChangedListener {
+            binding.genderLayout.error = null
+        }
+
+        binding.nameEditText.addTextChangedListener {
+            binding.nameLayout.error = null
+        }
     }
 
     private fun setupAdapter() {
@@ -108,11 +124,19 @@ class RegisterFragment : Fragment() {
                     }
 
                     is RegisterUIState.ValidationError -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Authentication Failed: ${it.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        val msgForName = it.msgForName
+                        val msgForNumber = it.msgForNumber
+                        val msgForGender = it.msgForGender
+
+                        if (msgForName != null) {
+                            binding.nameLayout.error = msgForName
+                        }
+                        if (msgForNumber != null) {
+                            binding.phoneNumberLayout.error = msgForNumber
+                        }
+                        if (msgForGender != null) {
+                            binding.genderLayout.error = msgForGender
+                        }
                         onSetLoading(false)
                     }
 

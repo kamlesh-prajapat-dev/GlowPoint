@@ -1,7 +1,7 @@
 package com.example.glowpoint.domain.repository
 
 import com.example.glowpoint.data.models.BookingDetails
-import com.example.glowpoint.domain.model.BookingResult
+import com.example.glowpoint.domain.model.result.BookingResult
 import kotlinx.coroutines.flow.Flow
 
 interface BookingRepository {

@@ -2,17 +2,15 @@ package com.example.glowpoint.ui.screens.components.services
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.glowpoint.data.models.User
 import com.example.glowpoint.data.models.ServiceItem
+import com.example.glowpoint.data.models.User
 import com.example.glowpoint.domain.usecase.SalonServiceUseCase
-import com.example.glowpoint.util.EmptyListException
 import com.example.glowpoint.util.NetworkUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -24,6 +22,13 @@ class ServiceContainerViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow<ServiceContainerUIState>(ServiceContainerUIState.Idle)
     val uiState: StateFlow<ServiceContainerUIState> get() = _uiState.asStateFlow()
+
+    private val _isFirstRequestedCompleteForMen = MutableStateFlow(false)
+    val isFirstRequestedCompleteForMen: StateFlow<Boolean> get() = _isFirstRequestedCompleteForMen.asStateFlow()
+
+    private val _isFirstRequestedCompletedForWomen = MutableStateFlow(false)
+    val isFirstRequestedCompletedForWomen: StateFlow<Boolean> get() = _isFirstRequestedCompletedForWomen.asStateFlow()
+
 
     // ---- For Load Initial State ----
     private val _menServices = MutableStateFlow<List<ServiceItem>>(emptyList())
@@ -51,7 +56,10 @@ class ServiceContainerViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val isNewUser = salonServiceUseCase.isNewUser()
             val timeSinceLastCache =
-                System.currentTimeMillis() - salonServiceUseCase.getLastTemeCache()
+                if (!genderCategory)
+                    System.currentTimeMillis() - salonServiceUseCase.getLastTemeCacheOfWomenServices()
+                else
+                    System.currentTimeMillis() - salonServiceUseCase.getLastTemeCacheOfMenServices()
             val fiveDaysInMillis = TimeUnit.DAYS.toMillis(5)
             val shouldFetchFromFirebase = isNewUser || timeSinceLastCache > fiveDaysInMillis
 
@@ -62,6 +70,7 @@ class ServiceContainerViewModel @Inject constructor(
                         is ServiceContainerUIState.Failure -> loadFromCacheOrShowError(
                             genderCategory = genderCategory
                         )
+
                         else -> Unit
                     }
                     _uiState.value = fetchResult
@@ -80,11 +89,11 @@ class ServiceContainerViewModel @Inject constructor(
     ) {
         val cachedSalons =
             if (genderCategory) salonServiceUseCase.getMenServicesFromCache() else salonServiceUseCase.getWomenServicesFromCache()
-        if (cachedSalons.isNotEmpty()) {
-            _uiState.value = ServiceContainerUIState.Success(cachedSalons, genderCategory)
+
+        if (genderCategory) {
+            _uiState.value = ServiceContainerUIState.MenSuccess(cachedSalons)
         } else {
-            // Cache is also empty, determine final state
-            _uiState.value = ServiceContainerUIState.Failure(EmptyListException("No Data"))
+            _uiState.value = ServiceContainerUIState.WomenSuccess(cachedSalons)
         }
     }
 
@@ -99,25 +108,31 @@ class ServiceContainerViewModel @Inject constructor(
         services: List<com.example.glowpoint.data.models.FetchedServiceItem>,
         genderCategory: Boolean
     ) {
-        if (genderCategory) _menServices.value =
-            services.map {
-                ServiceItem(
-                    id = it.id,
-                    name = it.name,
-                    description = it.description,
-                    genderCategory = true,
-                    price = it.price
-                )
-            } else _womenServices.value =
-            services.map {
-                ServiceItem(
-                    id = it.id,
-                    name = it.name,
-                    description = it.description,
-                    genderCategory = false,
-                    price = it.price
-                )
-            }
+        if (genderCategory) {
+            _menServices.value =
+                services.map {
+                    ServiceItem(
+                        id = it.id,
+                        name = it.name,
+                        description = it.description,
+                        genderCategory = true,
+                        price = it.price
+                    )
+                }
+            _isFirstRequestedCompleteForMen.value = true
+        } else {
+            _womenServices.value =
+                services.map {
+                    ServiceItem(
+                        id = it.id,
+                        name = it.name,
+                        description = it.description,
+                        genderCategory = false,
+                        price = it.price
+                    )
+                }
+            _isFirstRequestedCompletedForWomen.value = true
+        }
     }
 
     fun toggleServiceSelection(selectedService: ServiceItem, genderCategory: Boolean) {

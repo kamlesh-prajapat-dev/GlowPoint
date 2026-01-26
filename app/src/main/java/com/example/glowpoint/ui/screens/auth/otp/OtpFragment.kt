@@ -12,7 +12,9 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.glowpoint.R
@@ -64,7 +66,7 @@ class OtpFragment : Fragment() {
         // Cancel any existing timer
         timer?.cancel()
 
-        binding.resendCodeTextView.visibility = View.GONE
+        binding.resendCodeTextView.visibility = View.VISIBLE
         binding.timerTextView.visibility = View.VISIBLE
 
         timer = object : CountDownTimer(60000, 1000) {
@@ -86,73 +88,75 @@ class OtpFragment : Fragment() {
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.uiState.collect {
-                when (it) {
-                    is OtpUISate.Failure -> {
-                        Toast.makeText(
-                            requireContext(),
-                            "Authentication Failed: ${it.e.message}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        onSetLoading(false)
-                    }
-
-                    OtpUISate.Idle -> {
-                        onSetLoading(false)
-                    }
-
-                    OtpUISate.NoInternet -> {
-                        onSetLoading(false)
-                        showNoInternetDialog()
-                    }
-
-                    OtpUISate.Loading -> {
-                        onSetLoading(true)
-                    }
-
-                    is OtpUISate.Success -> {
-                        if (viewModel.isRegistered.value == true) {
-                            // REGISTRATION FLOW: Auth is successful, now create the user profile.
-                            viewModel.createProfile()
-                        } else {
-                            // LOGIN FLOW: Auth is successful, navigate to next screen.
-                            Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT)
-                                .show()
-                            handleNavigation(viewModel.isLocationSet.value)
-                        }
-                        onSetLoading(false)
-                    }
-
-                    is OtpUISate.ValidationError -> {
-                        Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                        onSetLoading(false)
-                    }
-
-                    is OtpUISate.Verification -> {
-                        onSetLoading(false)
-                        val verificationId = it.verificationId
-                        val token = it.token
-                        viewModel.onSetVerificationIdAndToken(verificationId, token)
-                        startTimer() // Restart the UI timer
-                    }
-
-                    is OtpUISate.CreateUserSuccess -> {
-                        val user = it.user
-                        if (user != null) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    when (it) {
+                        is OtpUISate.Failure -> {
                             Toast.makeText(
                                 requireContext(),
-                                "Registration Successful",
-                                Toast.LENGTH_SHORT
+                                "Authentication Failed: ${it.e.message}",
+                                Toast.LENGTH_LONG
                             ).show()
-                            findNavController().navigate(R.id.action_otpFragment_to_locationFragment)
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                "Registration Failed. Please try again.",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                            onSetLoading(false)
                         }
-                        onSetLoading(false)
+
+                        OtpUISate.Idle -> {
+                            onSetLoading(false)
+                        }
+
+                        OtpUISate.NoInternet -> {
+                            onSetLoading(false)
+                            showNoInternetDialog()
+                        }
+
+                        OtpUISate.Loading -> {
+                            onSetLoading(true)
+                        }
+
+                        is OtpUISate.Success -> {
+                            if (viewModel.isRegistered.value == true) {
+                                // REGISTRATION FLOW: Auth is successful, now create the user profile.
+                                viewModel.createProfile()
+                            } else {
+                                // LOGIN FLOW: Auth is successful, navigate to next screen.
+                                Toast.makeText(requireContext(), "Login Successful", Toast.LENGTH_SHORT)
+                                    .show()
+                                handleNavigation(viewModel.isLocationSet.value)
+                            }
+                            onSetLoading(false)
+                        }
+
+                        is OtpUISate.ValidationError -> {
+                            Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
+                            onSetLoading(false)
+                        }
+
+                        is OtpUISate.Verification -> {
+                            onSetLoading(false)
+                            val verificationId = it.verificationId
+                            val token = it.token
+                            viewModel.onSetVerificationIdAndToken(verificationId, token)
+                            startTimer() // Restart the UI timer
+                        }
+
+                        is OtpUISate.CreateUserSuccess -> {
+                            val user = it.user
+                            if (user != null) {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Registration Successful",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                findNavController().navigate(R.id.action_otpFragment_to_locationFragment)
+                            } else {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Registration Failed. Please try again.",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            onSetLoading(false)
+                        }
                     }
                 }
             }

@@ -1,8 +1,8 @@
-package com.example.glowpoint.data.remote.firebase
+package com.example.glowpoint.data.remote.repository
 
 import android.app.Activity
 import com.example.glowpoint.domain.repository.AuthRepository
-import com.example.glowpoint.domain.model.AuthResult
+import com.example.glowpoint.domain.model.result.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.PhoneAuthCredential

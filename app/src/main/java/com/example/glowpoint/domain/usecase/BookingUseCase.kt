@@ -1,15 +1,16 @@
 package com.example.glowpoint.domain.usecase
 
-import android.util.Log
 import com.example.glowpoint.data.local.LocalDatabase
 import com.example.glowpoint.data.models.BookingDetails
 import com.example.glowpoint.data.models.FetchedBooking
-import com.example.glowpoint.data.models.NotificationRequest
+import com.example.glowpoint.data.models.api.NotificationRequest
 import com.example.glowpoint.data.models.TimeSlot
-import com.example.glowpoint.domain.model.BookingResult
-import com.example.glowpoint.domain.model.FetchSalonsResult
-import com.example.glowpoint.domain.model.NotificationResult
-import com.example.glowpoint.domain.model.TokenResult
+import com.example.glowpoint.domain.mapper.toGetReqDomainFailure
+import com.example.glowpoint.domain.mapper.toWriteReqDomainFailure
+import com.example.glowpoint.domain.model.result.BookingResult
+import com.example.glowpoint.domain.model.result.FetchSalonsResult
+import com.example.glowpoint.domain.model.result.NotificationResult
+import com.example.glowpoint.domain.model.result.TokenResult
 import com.example.glowpoint.domain.repository.BookingRepository
 import com.example.glowpoint.domain.repository.NotificationRepository
 import com.example.glowpoint.domain.repository.SalonRepository
@@ -17,13 +18,13 @@ import com.example.glowpoint.domain.repository.TokenRepository
 import com.example.glowpoint.ui.screens.bookingStatus.BookingStatusUIState
 import com.example.glowpoint.ui.screens.bookings.BookingsUIState
 import com.example.glowpoint.ui.screens.components.bookingsummary.BookingSummaryUIState
+import com.example.glowpoint.util.Logger
 import com.example.glowpoint.workerscheduler.SenderNotificationWorkerScheduler
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
-import kotlin.collections.map
 
 class BookingUseCase @Inject constructor(
     private val bookingRepository: BookingRepository,
@@ -53,17 +54,17 @@ class BookingUseCase @Inject constructor(
                     is FetchSalonsResult.UpdateTimeSlotSuccess -> {
                         when(val notifyResult = notifyOwner(bookingId = result.bookingId, shopId = shopId)) {
                             is NotificationResult.Success -> {
-                                Log.d("OrderUseCase", "Notification sent successfully")
+                                Logger.d("OrderUseCase", "Notification sent successfully")
                             }
 
                             is NotificationResult.Error -> {
-                                Log.e("OrderUseCase", "Error sending notification", notifyResult.e)
+                                Logger.e("OrderUseCase", "Error sending notification", notifyResult.e)
                             }
                         }
                     }
 
                     is FetchSalonsResult.Failure -> {
-                        BookingSummaryUIState.Failure(updateTimeSlotResult.exception)
+                        BookingSummaryUIState.Failure(updateTimeSlotResult.exception.toWriteReqDomainFailure(shopId))
                     }
 
                     else -> Unit
@@ -72,7 +73,7 @@ class BookingUseCase @Inject constructor(
             }
 
             is BookingResult.Failure -> {
-                BookingSummaryUIState.Failure(result.exception)
+                BookingSummaryUIState.Failure(result.exception.toWriteReqDomainFailure(data = bookingDetails.userId))
             }
 
             else -> BookingSummaryUIState.Idle
@@ -83,7 +84,6 @@ class BookingUseCase @Inject constructor(
         return when (val result = tokenRepository.getShopFcmToken(shopId)) {
             is TokenResult.Success -> {
                 val token = result.token
-                if (token.isBlank()) return NotificationResult.Error(Exception("Invalid token"))
                 notificationRepository.sendNotification(
                     NotificationRequest(
                         token = token,
@@ -106,7 +106,9 @@ class BookingUseCase @Inject constructor(
     fun observeBookings(): Flow<BookingsUIState> {
         val user = localDatabase.getUser()
         val userId = user?.uid
-            ?: return flowOf(BookingsUIState.Failure(IllegalArgumentException("UserId cannot be blank")))
+            ?: return flowOf(BookingsUIState.Failure(IllegalArgumentException("UserId cannot be blank").toGetReqDomainFailure(
+                null
+            )))
         return bookingRepository.observeBookings(userId)
             .map {
                 when (it) {
@@ -115,13 +117,13 @@ class BookingUseCase @Inject constructor(
                     }
 
                     is BookingResult.Failure -> {
-                        BookingsUIState.Failure(it.exception)
+                        BookingsUIState.Failure(it.exception.toGetReqDomainFailure(userId))
                     }
 
                     else -> BookingsUIState.Idle
                 }
             }.catch {
-                emit(BookingsUIState.Failure(it as Exception))
+                emit(BookingsUIState.Failure(it.toGetReqDomainFailure(userId)))
             }
     }
 
@@ -134,13 +136,13 @@ class BookingUseCase @Inject constructor(
                     }
 
                     is BookingResult.Failure -> {
-                        BookingStatusUIState.Failure(it.exception)
+                        BookingStatusUIState.GetFailure(it.exception.toGetReqDomainFailure(bookingId))
                     }
 
                     else -> BookingStatusUIState.Idle
                 }
             }.catch {
-                emit(BookingStatusUIState.Failure(it as Exception))
+                emit(BookingStatusUIState.GetFailure(it.toGetReqDomainFailure(bookingId)))
             }
     }
 
@@ -172,7 +174,7 @@ class BookingUseCase @Inject constructor(
                         }
 
                         is FetchSalonsResult.Failure -> {
-                            BookingStatusUIState.Failure(result.exception)
+                            BookingStatusUIState.WriteFailure(result.exception.toWriteReqDomainFailure(salonId))
                         }
 
                         else -> Unit
@@ -182,7 +184,7 @@ class BookingUseCase @Inject constructor(
             }
 
             is BookingResult.Failure -> {
-                BookingStatusUIState.Failure(result.exception)
+                BookingStatusUIState.WriteFailure(result.exception.toWriteReqDomainFailure(bookingId))
             }
 
             else -> BookingStatusUIState.Idle

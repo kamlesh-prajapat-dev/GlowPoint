@@ -23,7 +23,6 @@ class SplashFragment : Fragment() {
     private var _binding: FragmentSplashBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SplashViewModel by viewModels()
-
     private var navigationJob: Job? = null
 
     override fun onCreateView(
@@ -37,23 +36,26 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       observeViewModel()
+        observeViewModel()
     }
 
     private fun observeViewModel() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.splashNavigateState.collect {
-                    when(it) {
+                    when (it) {
                         SplashUIState.HomeState -> navigateWithDelay {
                             findNavController().navigate(R.id.action_splashFragment_to_homeFragment)
                         }
-                        SplashUIState.LocationState -> {
+
+                        SplashUIState.LocationState -> navigateWithDelay {
                             findNavController().navigate(R.id.action_splashFragment_to_locationFragment)
                         }
-                        SplashUIState.LoginState -> {
+
+                        SplashUIState.LoginState -> navigateWithDelay {
                             findNavController().navigate(R.id.action_splashFragment_to_loginFragment)
                         }
+
                         SplashUIState.Idle -> Unit
                     }
                 }
@@ -61,13 +63,11 @@ class SplashFragment : Fragment() {
         }
     }
 
-    private fun navigateWithDelay(action: () -> Unit) {
+    private suspend fun navigateWithDelay(action: () -> Unit) {
         if (navigationJob?.isActive == true) return
 
-        navigationJob = viewLifecycleOwner.lifecycleScope.launch {
-            delay(3000)
-            action()
-        }
+        delay(3000)
+        action()
     }
 
     override fun onDestroyView() {

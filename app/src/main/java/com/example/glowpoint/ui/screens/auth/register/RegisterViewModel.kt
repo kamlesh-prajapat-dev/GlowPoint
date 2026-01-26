@@ -46,18 +46,26 @@ class RegisterViewModel @Inject constructor(
         }
 
         // Validation
+        val phoneNumberError = validatePhoneNumber(phoneNumber)
+        val nameError = validateName(userName)
+        val genderError = validateGender(_gender.value ?: "")
 
+        if (phoneNumberError != null || nameError != null || genderError != null) {
+            _uiState.value = RegisterUIState.ValidationError(msgForNumber = phoneNumberError, msgForName = nameError, msgForGender = genderError)
+            return
+        }
 
         _phoneNumber.value = phoneNumber
         _userName.value = userName
 
         viewModelScope.launch(Dispatchers.IO) {
-            when(val result = userUseCase.checkUserByPhoneNumber("+91$phoneNumber")) {
+            when (val result = userUseCase.checkUserByPhoneNumber("+91$phoneNumber")) {
                 is RegisterUIState.IsUserExists -> {
                     if (!result.isExists) {
                         sendVerificationCode(activity, "+91$phoneNumber")
                     } else {
-                        _uiState.value = RegisterUIState.ValidationError("User already registered with this phone number.")
+                        _uiState.value =
+                            RegisterUIState.ValidationError(msgForNumber = "User already registered with this phone number.")
                     }
                 }
 
@@ -87,7 +95,16 @@ class RegisterViewModel @Inject constructor(
             verificationId: String,
             token: PhoneAuthProvider.ForceResendingToken
         ) {
-            _uiState.value = RegisterUIState.Verification(verificationId, token, user = User(uid = "", name = _userName.value ?: "", gender = _gender.value ?: "", phoneNumber = _phoneNumber.value ?: ""))
+            _uiState.value = RegisterUIState.Verification(
+                verificationId,
+                token,
+                user = User(
+                    uid = "",
+                    name = _userName.value ?: "",
+                    gender = _gender.value ?: "",
+                    phoneNumber = _phoneNumber.value ?: ""
+                )
+            )
         }
     }
 
@@ -95,6 +112,27 @@ class RegisterViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = authUseCase.signInWithPhoneAuthCredentialRegister(credential)
         }
+    }
+
+    private fun validatePhoneNumber(phoneNumber: String): String? {
+        if (phoneNumber.length != 10 || phoneNumber.isBlank()) {
+            return "Please enter valid phone number."
+        }
+        return null
+    }
+
+    private fun validateName(name: String): String? {
+        if (name.isBlank()) {
+            return "Please enter your name."
+        }
+        return null
+    }
+
+    private fun validateGender(gender: String): String? {
+        if (gender.isBlank()) {
+            return "Please select your gender."
+        }
+        return null
     }
 
     fun reset() {

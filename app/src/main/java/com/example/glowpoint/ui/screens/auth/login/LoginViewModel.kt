@@ -43,7 +43,7 @@ class LoginViewModel @Inject constructor(
         }
 
         // Validation
-        if (phoneNumber.length != 10) {
+        if (phoneNumber.length != 10 || phoneNumber.isBlank()) {
             _uiState.value = LoginUIState.ValidationError("Please enter valid phone number.")
             return
         }

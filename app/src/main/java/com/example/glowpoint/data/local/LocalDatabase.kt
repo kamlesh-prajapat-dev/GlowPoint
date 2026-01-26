@@ -25,7 +25,8 @@ class LocalDatabase @Inject constructor(
         private const val AREA = "area" // Address of user
         private const val USER = "user_data"
         private const val SALON_MODEL = "salons"
-        private const val LAST_CACHE_TIMESTAMP_OF_SALON_SERVICES = "last_cache_timestamp"
+        private const val LAST_CACHE_TIMESTAMP_OF_SALON_MEN_SERVICES = "last_cache_timestamp_of_men_services"
+        private const val LAST_CACHE_TIMESTAMP_OF_SALON_WOMEN_SERVICES = "last_cache_timestamp_of_women_services"
         private const val LAST_CACHE_TIMESTAMP_OF_SALONS = "last_cache_timestamp_of_salons"
         private const val IS_NEW_USER = "is_new_user"
         private const val MEN_SERVICES = "men_services"
@@ -97,10 +98,16 @@ class LocalDatabase @Inject constructor(
             sharedPreferences.edit { putFloat(LONGITUDE, value) }
         }
 
-    var lastCacheTimestampOfSalonServices: Long
-        get() = sharedPreferences.getLong(LAST_CACHE_TIMESTAMP_OF_SALON_SERVICES, 0L)
+    var lastCacheTimestampOfSalonMenServices: Long
+        get() = sharedPreferences.getLong(LAST_CACHE_TIMESTAMP_OF_SALON_MEN_SERVICES, 0L)
         set(value) {
-            sharedPreferences.edit { putLong(LAST_CACHE_TIMESTAMP_OF_SALON_SERVICES, value) }
+            sharedPreferences.edit { putLong(LAST_CACHE_TIMESTAMP_OF_SALON_MEN_SERVICES, value) }
+        }
+
+    var lastCacheTimestampOfSalonWomenServices: Long
+        get() = sharedPreferences.getLong(LAST_CACHE_TIMESTAMP_OF_SALON_WOMEN_SERVICES, 0L)
+        set(value) {
+            sharedPreferences.edit { putLong(LAST_CACHE_TIMESTAMP_OF_SALON_WOMEN_SERVICES, value) }
         }
 
     var lastCacheTimestampOfSalons: Long
